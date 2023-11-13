@@ -3,9 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="description" content="Les petits plats - Consultez nos meilleures recettes de cuisine">
+    <link rel="stylesheet" href="css/style.css"  type="text/css" >
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Manrope" rel="stylesheet">
+    <title>Les Petits Plats</title>
 </head>
-<body>
-    
+<body class="w-1440 mx-auto">
+    <header class="h-666 my-0 bg-background-plate">
+        <img src="assets/logo.png" class="logo h-[81.6px] pt-14 pl-[69px]" title="Les petits plats" alt="Les petits plats">
+        <div class="w-[890px] text-center text-amber-300 text-[44px] mx-auto pt-[168px] pb-8 font-normal font-['Anton']">CHERCHEZ PARMI PLUS DE 1500 RECETTES <br/>DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</div>
+        <div class="w-[954px] h-[72px] mx-auto bg-white rounded-xl relative">
+            <input 
+                type="search" 
+                class="border-0 text-input mt-6 ml-9 w-10/12 font-['Manrope']"
+                id="searchInput"
+                placeholder="Rechercher une recette, un ingrédient, ..."
+            />
+            <div class="w-[51px] h-[52px] bg-zinc-900 rounded-[10px] right-2.5 top-2.5 absolute flex items-center justify-center">
+                <img src="assets/glass.png" class="search_button" alt="Search button">
+            </div>
+        </div>  
+    </header>
+    <main class="bg-gray-200 h-50">
+        <div class="filter_container" >
+            <div class="filter_buttons">
+
+            </div>
+            <div class="number_recipes">
+                
+            </div>
+        </div>
+    </main>
 </body>
 </html>
