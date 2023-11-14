@@ -1,3 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.common-btn {
+    @apply bg-white text-black h-14 text-base font-medium font-['Manrope'] py-2 px-4 rounded-[11px];
+}
+

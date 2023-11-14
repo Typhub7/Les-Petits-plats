@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css"  type="text/css" >
     <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Manrope" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/848fe89c63.js" crossorigin="anonymous"></script>
     <title>Les Petits Plats</title>
 </head>
 <body class="w-1440 mx-auto">
@@ -25,10 +26,60 @@
             </div>
         </div>  
     </header>
-    <main class="bg-gray-200 h-50">
-        <div class="filter_container" >
-            <div class="filter_buttons">
-
+    <main class="bg-gray-200 h-50 pt-[17px]">
+        <div class="filter_container w-[692px] ml-[103px] " >
+            <div class="filter_buttons flex flex-row justify-between items-center ">
+                <div class="ingredientContainer">
+                    <button class="ingredient_drop common-btn w-[195px] flex flex-row justify-between items-center" >
+                      <span id="default_ingredient"> Ingrédients </span>
+                      <span class="fa-solid fa-chevron-down text-base "></span>
+                    </button>
+                    <ul class="ingredient_select" id="i-selection" role="listbox">
+                      <li role="option"> 
+                        <button class="option" data-value="popularite" >Popularité</button>
+                      </li>
+                      <li role="option">
+                        <button class="option" data-value="date" >Date</button>
+                      </li>
+                      <li role="option">
+                        <button class="option" data-value="titre" >Titre</button>
+                      </li>
+                    </ul>
+                </div>
+                <div class="appliancesContainer">
+                    <button class="appliances_drop common-btn w-[179px] flex flex-row justify-between items-center" >
+                      <span id="default_appliances"> Appareils </span>
+                      <span class="fa-solid fa-chevron-down text-base " ></span>
+                    </button>
+                    <ul class="appliances_select" id="a-selection" role="listbox">
+                      <li role="option"> 
+                        <button class="option" data-value="popularite" tabindex="-1">Popularité</button>
+                      </li>
+                      <li role="option">
+                        <button class="option" data-value="date" tabindex="-1">Date</button>
+                      </li>
+                      <li role="option">
+                        <button class="option" data-value="titre" tabindex="-1">Titre</button>
+                      </li>
+                    </ul>
+                </div>
+                <div class="utensilsContainer">
+                    <button class="utensils_drop common-btn w-[188px] flex flex-row justify-between items-center" >
+                      <span id="default_utensils"> Ustensiles </span>
+                      <span class="fa-solid fa-chevron-down text-base"></span>
+                    </button>
+                    <ul class="utensils_select" id="u-selection" role="listbox">
+                      <li role="option"> 
+                        <button class="option" data-value="popularite" tabindex="-1">Popularité</button>
+                      </li>
+                      <li role="option">
+                        <button class="option" data-value="date" tabindex="-1">Date</button>
+                      </li>
+                      <li role="option">
+                        <button class="option" data-value="titre" tabindex="-1">Titre</button>
+                      </li>
+                    </ul>
+                </div>
             </div>
             <div class="number_recipes">
                 
