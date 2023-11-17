@@ -18,7 +18,7 @@
             <input 
                 type="search" 
                 class="border-0 text-input mt-6 ml-9 w-10/12 font-['Manrope']"
-                id="searchInput"
+                id="globalSearchInput"
                 placeholder="Rechercher une recette, un ingrédient, ..."
             />
             <div class="w-[51px] h-[52px] bg-zinc-900 rounded-[10px] right-2.5 top-2.5 absolute flex items-center justify-center">
@@ -28,57 +28,69 @@
     </header>
     <main class="bg-gray-200 h-50 pt-[17px]">
         <div class="filter_container w-[692px] ml-[103px] " >
-            <div class="filter_buttons flex flex-row justify-between items-center ">
+            <div class="filter_buttons flex flex-row justify-between">
                 <div class="ingredientContainer">
                     <button class="ingredient_drop common-btn w-[195px] flex flex-row justify-between items-center" >
                       <span id="default_ingredient"> Ingrédients </span>
                       <span class="fa-solid fa-chevron-down text-base "></span>
                     </button>
-                    <ul class="ingredient_select" id="i-selection" role="listbox">
-                      <li role="option"> 
-                        <button class="option" data-value="popularite" >Popularité</button>
-                      </li>
-                      <li role="option">
-                        <button class="option" data-value="date" >Date</button>
-                      </li>
-                      <li role="option">
-                        <button class="option" data-value="titre" >Titre</button>
-                      </li>
-                    </ul>
+                    <div class="expendedIngredient bg-white w-[195px] h-[315px] pt-2 " >
+                      <div class="ingredientInput opened-container relative ml-4 w-[160px] border border-stone-300">
+                        <input
+                          type="search"
+                          class="w-[118px] h-9 ml-2"
+                          id="ingredientsSearchInput"
+                          placeholder="Ingrédients"
+                        />
+                        <div class="w-[18px] h-[18px] color-black bg-transparent right-2 top-3 absolute flex items-center justify-center">
+                          <img src="assets/glassgrey.png" class="search_button" alt="Search button">
+                        </div>
+                      </div>
+                      <ul class="ingredient_select ml-4 text-sm font-normal font-['Manrope'] pt-4" id="i-selection" role="listbox">
+                      </ul>
+                    </div>
                 </div>
                 <div class="appliancesContainer">
                     <button class="appliances_drop common-btn w-[179px] flex flex-row justify-between items-center" >
                       <span id="default_appliances"> Appareils </span>
                       <span class="fa-solid fa-chevron-down text-base " ></span>
                     </button>
-                    <ul class="appliances_select" id="a-selection" role="listbox">
-                      <li role="option"> 
-                        <button class="option" data-value="popularite" tabindex="-1">Popularité</button>
-                      </li>
-                      <li role="option">
-                        <button class="option" data-value="date" tabindex="-1">Date</button>
-                      </li>
-                      <li role="option">
-                        <button class="option" data-value="titre" tabindex="-1">Titre</button>
-                      </li>
-                    </ul>
+                    <div class="expendedAppliance bg-white w-[179px] pt-2 " >
+                      <div class="applianceInput opened-container relative ml-4 w-[144px] border border-stone-300">
+                        <input
+                          type="search"
+                          class="w-[102px] h-9 ml-2"
+                          id="applianceSearchInput"
+                          placeholder="Appareils"
+                        />
+                        <div class="w-[18px] h-[18px] color-black bg-transparent right-2 top-3 absolute flex items-center justify-center">
+                          <img src="assets/glassgrey.png" class="search_button" alt="Search button">
+                        </div>
+                      </div>
+                      <ul class="appliances_select ml-4 text-sm font-normal font-['Manrope'] pt-4" id="a-selection" role="listbox">
+                      </ul>
+                    </div>
                 </div>
                 <div class="utensilsContainer">
                     <button class="utensils_drop common-btn w-[188px] flex flex-row justify-between items-center" >
                       <span id="default_utensils"> Ustensiles </span>
                       <span class="fa-solid fa-chevron-down text-base"></span>
                     </button>
-                    <ul class="utensils_select" id="u-selection" role="listbox">
-                      <li role="option"> 
-                        <button class="option" data-value="popularite" tabindex="-1">Popularité</button>
-                      </li>
-                      <li role="option">
-                        <button class="option" data-value="date" tabindex="-1">Date</button>
-                      </li>
-                      <li role="option">
-                        <button class="option" data-value="titre" tabindex="-1">Titre</button>
-                      </li>
-                    </ul>
+                    <div class="expendedUtensils bg-white w-[188px] pt-2 " >
+                      <div class="utensilsInput opened-container relative ml-4 w-[153px] border border-stone-300">
+                        <input
+                          type="search"
+                          class="w-[111px] h-9 ml-2"
+                          id="utensilsSearchInput"
+                          placeholder="Ustensiles"
+                        />
+                        <div class="w-[18px] h-[18px] color-black bg-transparent right-2 top-3 absolute flex items-center justify-center">
+                          <img src="assets/glassgrey.png" class="search_button" alt="Search button">
+                        </div>
+                      </div>
+                      <ul class="ustensils_select ml-4 text-sm font-normal font-['Manrope'] pt-4" id="u-selection" role="listbox">
+                      </ul>
+                    </div>
                 </div>
             </div>
             <div class="number_recipes">
@@ -86,5 +98,6 @@
             </div>
         </div>
     </main>
+    <script type="module" src="scripts/pages/index.js"></script>
 </body>
 </html>
