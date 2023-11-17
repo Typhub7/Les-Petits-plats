@@ -14,6 +14,9 @@ module.exports = {
       },
       backgroundImage: {
         'background-plate': "url('/assets/header_background.jpg')"
+      },    
+      borderRadius: {
+        'md': '0.688rem',
       }
 
     },

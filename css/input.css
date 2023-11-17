@@ -3,6 +3,22 @@
 @import 'tailwindcss/utilities';
 
 .common-btn {
-    @apply bg-white text-black h-14 text-base font-medium font-['Manrope'] py-2 px-4 rounded-[11px];
+    @apply bg-white text-black h-14 text-base font-medium font-['Manrope'] py-2 px-4;
 }
+
+ul { 
+    @apply no-scrollbar overflow-y-auto ml-4 text-sm font-normal font-['Manrope'] max-h-[215px]
+}
+
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+
 
