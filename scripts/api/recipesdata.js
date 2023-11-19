@@ -1,27 +1,18 @@
 import { recipes } from '../../data/recipes.js'
 
 export const createArraysIngredient = () => {
-    const ingredientsRetrieved = retrieveIngredient(recipes)
-    const spaceRemoved = removeSpaces(ingredientsRetrieved)
-    const Capitalised = caseGuard(spaceRemoved).sort()
-    const ingredients = removeDouble(Capitalised)           
-    return ingredients;
+    const ingredientsRetrieved = retrieveIngredient(recipes)       
+    return cleanComponent(ingredientsRetrieved)
 }
 
 export const createArraysAppliances = () => {
-    const appliancesRetrieved = retrieveAppliance(recipes)
-    const spaceRemoved = removeSpaces(appliancesRetrieved)
-    const Capitalised = caseGuard(spaceRemoved).sort()
-    const appliances = removeDouble(Capitalised)            
-    return appliances;
+    const appliancesRetrieved = retrieveAppliance(recipes)         
+    return cleanComponent(appliancesRetrieved)
 }
 
 export const createArraysUstensils = ()  =>  {
-    const ustensilsRetrieved = retrieveUstensil(recipes)
-    const spaceRemoved = removeSpaces(ustensilsRetrieved)
-    const Capitalised = caseGuard(spaceRemoved).sort()
-    const ustensils = removeDouble(Capitalised)            
-    return ustensils;
+    const ustensilsRetrieved = retrieveUstensil(recipes)      
+    return cleanComponent(ustensilsRetrieved)
 }
 // Fonction qui extrait les ingredients de chaque objet dans le tableau recettes section ingredients.
 const retrieveIngredient = (recipes) => 
@@ -47,3 +38,10 @@ const caseGuard = (components) =>
 
 const removeDouble = (components) =>
     Array.from(new Set(components))
+
+const cleanComponent = (components) => {
+    const spaceRemoved = removeSpaces(components)
+    const capitalised = caseGuard(spaceRemoved).sort()
+    const cleanedComponents = removeDouble(capitalised)  
+    return cleanedComponents  
+}

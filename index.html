@@ -14,27 +14,27 @@
     <header class="h-666 my-0 bg-background-plate">
         <img src="assets/logo.png" class="logo h-[81.6px] pt-14 pl-[69px]" title="Les petits plats" alt="Les petits plats">
         <div class="w-[890px] text-center text-amber-300 text-[44px] mx-auto pt-[168px] pb-8 font-normal font-['Anton']">CHERCHEZ PARMI PLUS DE 1500 RECETTES <br/>DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</div>
-        <div class="w-[954px] h-[72px] mx-auto bg-white rounded-xl relative">
+        <div class="input_container w-[954px] h-[72px] mx-auto bg-white rounded-xl relative">
             <input 
                 type="search" 
-                class="border-0 text-input mt-6 ml-9 w-10/12 font-['Manrope']"
+                class="border-0 text-input mt-6 ml-9 w-10/12 font-['Manrope'] outline-none"
                 id="globalSearchInput"
                 placeholder="Rechercher une recette, un ingrédient, ..."
             />
-            <div class="w-[51px] h-[52px] bg-zinc-900 rounded-[10px] right-2.5 top-2.5 absolute flex items-center justify-center">
+            <div class="glass_bg w-[51px] h-[52px] bg-zinc-900 rounded-[10px] right-2.5 top-2.5 absolute flex items-center justify-center ">
                 <img src="assets/glass.png" class="search_button" alt="Search button">
             </div>
         </div>  
     </header>
-    <main class="bg-gray-200 h-50 pt-[17px]">
-        <div class="filter_container w-[692px] ml-[103px] " >
+    <main class="bg-gray-200 pt-[17px]">
+        <div class="filter_container w-[692px] h-[104px] ml-[103px] " >
             <div class="filter_buttons flex flex-row justify-between">
-                <div class="ingredientContainer">
-                    <button class="ingredient_drop common-btn w-[195px] flex flex-row justify-between items-center rounded-t-md rounded-b-md" >
+                <div class="ingredientContainer relative">
+                    <button class="ingredient_drop common-btn w-[195px] rounded-b-md" >
                       <span id="default_ingredient"> Ingrédients </span>
                       <span class="fa-solid fa-chevron-down text-base "></span>
                     </button>
-                    <div class="expendedIngredient bg-white w-[195px] h-[290px] rounded-b-md pt-2 invisible" >
+                    <div class="expendedIngredient expended invisible w-[195px] h-[290px]" >
                       <div class="ingredientInput opened-container relative ml-4 w-[160px] mb-4 border border-stone-300">
                         <input
                           type="search"
@@ -46,16 +46,16 @@
                           <img src="assets/glassgrey.png" class="search_button" alt="Search button">
                         </div>
                       </div>
-                      <ul class="ingredient_select" id="i-selection" role="listbox">
+                      <ul class="ingredient_select w-[195px]" id="i-selection" role="listbox">
                       </ul>
                     </div>
                 </div>
                 <div class="appliancesContainer">
-                    <button class="appliances_drop common-btn w-[179px] flex flex-row justify-between items-center rounded-t-md rounded-b-md" >
+                    <button class="appliances_drop common-btn w-[179px] rounded-b-md" >
                       <span id="default_appliances"> Appareils </span>
                       <span class="fa-solid fa-chevron-down text-base" ></span>
                     </button>
-                    <div class="expendedAppliance bg-white w-[179px] pt-2 invisible" >
+                    <div class="expendedAppliance expended invisible w-[179px] h-[290px] " >
                       <div class="applianceInput opened-container relative ml-4 w-[144px] mb-4 border border-stone-300">
                         <input
                           type="search"
@@ -67,16 +67,16 @@
                           <img src="assets/glassgrey.png" class="search_button" alt="Search button">
                         </div>
                       </div>
-                      <ul class="appliances_select" id="a-selection" role="listbox">
+                      <ul class="appliances_select w-[179px]" id="a-selection" role="listbox">
                       </ul>
                     </div>
                 </div>
                 <div class="utensilsContainer">
-                    <button class="utensils_drop common-btn w-[188px] flex flex-row justify-between items-center rounded-t-md rounded-b-md" >
+                    <button class="utensils_drop common-btn w-[188px] rounded-b-md" >
                       <span id="default_utensils"> Ustensiles </span>
                       <span class="fa-solid fa-chevron-down text-base"></span>
                     </button>
-                    <div class="expendedUtensils bg-white w-[188px] pt-2 invisible" >
+                    <div class="expendedUtensils expended invisible w-[188px] h-[290px] " >
                       <div class="utensilsInput opened-container relative ml-4 w-[153px] mb-4 border border-stone-300">
                         <input
                           type="search"
@@ -88,7 +88,7 @@
                           <img src="assets/glassgrey.png" class="search_button" alt="Search button">
                         </div>
                       </div>
-                      <ul class="ustensils_select" id="u-selection" role="listbox">
+                      <ul class="ustensils_select w-[188px]" id="u-selection" role="listbox">
                         </ul>
                     </div>
                 </div>
@@ -96,6 +96,12 @@
             <div class="number_recipes">
                 
             </div>
+        </div>
+        <div class="choiced_filter">
+
+        </div>
+        <div class="recipe_gallery w-[1440px] px-[103px] bg-gray-200 flex flex-wrap justify-between gap-7">
+
         </div>
     </main>
     <script type="module" src="scripts/pages/index.js"></script>
