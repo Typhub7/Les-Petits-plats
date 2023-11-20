@@ -44,17 +44,12 @@ export function createRecipeCards(recipes) {
         const card = recipeTemplate(recipeCard)
         recipesGallery.innerHTML += card.newRecipeCard
    })
+   updateRecipeCount(recipeCards.length)
 }
 
+// Fonction pour mettre à jour le nombre de recettes affichées
+function updateRecipeCount(length) {
+  const recipeCountElement = document.getElementById("recipeCount");
+  recipeCountElement.textContent = `${length} recettes`;
 
-/*
-// Création d'un élément pour afficher le nombre total de recettes affichées
-const totalRecipeCount = document.createElement("div");
-totalRecipeCount.classList.add("totalRecettes");
-totalRecipeCount.textContent = `${recipes.length} recettes`;
-
-// Sélection de la div "filterContainer"
-const filterContainer = document.getElementById("containerFilter");
-
-// Ajout de l'élément totalRecipeCount à l'intérieur de filterContainer
-filterContainer.appendChild(totalRecipeCount);*/
+}

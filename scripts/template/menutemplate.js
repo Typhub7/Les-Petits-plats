@@ -12,4 +12,4 @@ export function displayMenuElement(ulClass, elementArrayFunction) {
     })
   
     ulLocalisation.innerHTML = newElements.join("")
-  }
+}

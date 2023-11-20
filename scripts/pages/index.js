@@ -18,8 +18,8 @@ import { displayMenuElement } from "../template/menutemplate.js"
 // Event listener pour les boutons de filtre
 const buttons = document.querySelectorAll(".common-btn")
 
-buttons.forEach((button) => {
-  button.addEventListener("click", function () {
+buttons.forEach((dropButton) => {
+  dropButton.addEventListener("click", function () {
     const nextElement = this.nextElementSibling
     toggleComponents(nextElement)
     RotateChevron(this)
