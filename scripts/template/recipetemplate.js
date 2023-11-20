@@ -49,7 +49,7 @@ export function createRecipeCards(recipes) {
 
 // Fonction pour mettre à jour le nombre de recettes affichées
 function updateRecipeCount(length) {
-  const recipeCountElement = document.getElementById("recipeCount");
-  recipeCountElement.textContent = `${length} recettes`;
+  const recipeCountElement = document.getElementById("recipeCount")
+  recipeCountElement.textContent = `${length} recettes`
 
 }

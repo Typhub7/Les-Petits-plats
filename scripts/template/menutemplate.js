@@ -13,3 +13,20 @@ export function displayMenuElement(ulClass, elementArrayFunction) {
   
     ulLocalisation.innerHTML = newElements.join("")
 }
+
+export function displayChosenElement(ulClass, elementName) {
+  const divLocalisation = document.querySelector(`.${ulClass}`)
+  const newElement = 
+  `<div class="chosen_element data-value=${elementName} w-[210px] h-[53px] mt-5 px-[16px] py-[17px]  gap-3 bg-amber-300 rounded-[10px] flex justify-between items-center"> 
+     <button class="option text-left text-sm font-normal font-['Manrope'] " data-value="${elementName}" >${elementName}</button>
+     <i class="fa-solid fa-xmark visible"></i>
+   </div>`
+
+  divLocalisation.innerHTML += newElement
+}
+
+export function removeChosenElement(element) {
+  if (element) {
+    element.remove()
+  }
+}
