@@ -7,11 +7,7 @@ import {
 
 import { createRecipeCards } from "../template/recipetemplate.js"
 
-import { 
-  RotateChevron,
-  toggleRoundedCorner,
-  toggleComponents 
-} from "../components/components.js"
+import { closeMenuButton } from "../components/components.js"
 
 import { 
   displayMenuElement,
@@ -19,26 +15,25 @@ import {
   removeChosenElement  } from "../template/menutemplate.js"
 
 // Event listener pour les boutons dropdown des filtres
-
 function listenToDropButton() {
   const buttons = document.querySelectorAll(".common-btn")
   buttons.forEach((dropButton) => {
     dropButton.addEventListener("click", function () {
-      const nextElement = this.nextElementSibling
-      toggleComponents(nextElement)
-      RotateChevron(this)
-      toggleRoundedCorner(this)
+      closeMenuButton(this)
     })
   })
 }
 
-// Fonction qui écoute les boutons des listes et renvoi l'ingredient, l'appareil ou l'ustensil cliqué
+// Fonction qui écoute les boutons des listes et l'ingredient, l'appareil ou l'ustensil cliqué
 function listenToComponent() {
   const optionsButtons = document.querySelectorAll(".option")
   optionsButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       const componentValue = event.currentTarget.getAttribute("data-value")
       displayChosenElement("choiced_filter",componentValue)
+      const findParentButton = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
+      const findedButton = findParentButton.querySelector("button");
+      closeMenuButton(findedButton)
     })
   })
 }
@@ -57,10 +52,7 @@ function initremoveComponent() {
 displayMenuElement("ingredient_select", createArraysIngredient)
 displayMenuElement("appliances_select", createArraysAppliances)
 displayMenuElement("ustensils_select", createArraysUstensils)
-// Appel initial pour créer les cartes de recette au chargement de la page
 createRecipeCards(recipes)
 listenToDropButton() 
 listenToComponent()
 initremoveComponent() 
-
-

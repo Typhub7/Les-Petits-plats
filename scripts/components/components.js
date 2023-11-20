@@ -13,3 +13,11 @@ button.classList.toggle("rounded-b-md")
 export function toggleComponents(element) {
 element.classList.toggle("invisible")
 }
+
+//Fonction qui ferme le bouton menu si un choix est fait dans la liste
+export function closeMenuButton(findedButton) {
+  const nextElement = findedButton.nextElementSibling
+  toggleComponents(nextElement)
+  RotateChevron(findedButton)
+  toggleRoundedCorner(findedButton)
+} 
