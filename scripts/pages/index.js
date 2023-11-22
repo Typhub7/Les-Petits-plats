@@ -46,8 +46,6 @@ function listenToComponent() {
         closeMenuButton(findedButton)
       } else {
         moveElementToOriginalPosition(elementValue,ulElement)
-        console.log("voila elementValue",elementValue)
-        console.log("voila ulElement",ulElement)
         removeChosenElement(componentValue)
       }
     })
@@ -63,7 +61,7 @@ function removeComponent() {
     if (chosenElement) {
       const originalUlId = chosenElement.getAttribute('original-ul');
       const originalUlValue = document.getElementById(originalUlId);
-      const dataIndexValue = event.target.getAttribute('data-index')
+      const dataIndexValue = chosenElement.getAttribute('data-index')
       moveElementToOriginalPosition (dataIndexValue,originalUlValue)
       console.log("voila dataIndexValue",dataIndexValue)
       console.log("voila originalUlValue",originalUlValue)

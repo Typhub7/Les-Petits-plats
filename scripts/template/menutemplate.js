@@ -28,7 +28,6 @@ export function moveElementToTop(elementIndex, ulElement) {
 export function moveElementToOriginalPosition(elementIndex, ulElement) {
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`);
   const originalIndex = parseInt(elementToMove.getAttribute('data-original-index'));
-  console.log("originalIndex",originalIndex)
 
   if (elementToMove && ulElement && !isNaN(originalIndex)) {
     const elements = ulElement.querySelectorAll('.element');
