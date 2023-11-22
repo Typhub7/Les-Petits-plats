@@ -602,10 +602,6 @@ video {
   top: 0.25rem;
 }
 
-.top-1\/2 {
-  top: 50%;
-}
-
 .top-10 {
   top: 2.5rem;
 }
@@ -642,6 +638,11 @@ video {
   margin: 0.5rem;
 }
 
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .mx-\[103px\] {
   margin-left: 103px;
   margin-right: 103px;
@@ -662,24 +663,19 @@ video {
   margin-bottom: 0.25rem;
 }
 
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
-.my-6 {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
+}
+
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .mb-4 {
@@ -710,12 +706,12 @@ video {
   margin-top: 0.5rem;
 }
 
-.mt-6 {
-  margin-top: 1.5rem;
-}
-
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
 }
 
 .block {
@@ -766,10 +762,6 @@ video {
   height: 2.25rem;
 }
 
-.h-\[104px\] {
-  height: 104px;
-}
-
 .h-\[18px\] {
   height: 18px;
 }
@@ -790,6 +782,14 @@ video {
   height: 52px;
 }
 
+.h-\[53px\] {
+  height: 53px;
+}
+
+.h-\[60px\] {
+  height: 60px;
+}
+
 .h-\[72px\] {
   height: 72px;
 }
@@ -804,18 +804,6 @@ video {
 
 .h-\[81\.6px\] {
   height: 81.6px;
-}
-
-.h-\[60px\] {
-  height: 60px;
-}
-
-.h-\[40px\] {
-  height: 40px;
-}
-
-.h-\[53px\] {
-  height: 53px;
 }
 
 .max-h-\[215px\] {
@@ -906,6 +894,10 @@ video {
   width: 195px;
 }
 
+.w-\[210px\] {
+  width: 210px;
+}
+
 .w-\[330px\] {
   width: 330px;
 }
@@ -934,18 +926,6 @@ video {
   width: 954px;
 }
 
-.w-\[141px\] {
-  width: 141px;
-}
-
-.w-\[205px\] {
-  width: 205px;
-}
-
-.w-\[210px\] {
-  width: 210px;
-}
-
 .border-collapse {
   border-collapse: collapse;
 }
@@ -957,6 +937,10 @@ video {
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .resize {
@@ -1007,6 +991,10 @@ video {
   gap: 0.625rem;
 }
 
+.gap-3 {
+  gap: 0.75rem;
+}
+
 .gap-4 {
   gap: 1rem;
 }
@@ -1025,14 +1013,6 @@ video {
 
 .gap-9 {
   gap: 2.25rem;
-}
-
-.gap-\[60px\] {
-  gap: 60px;
-}
-
-.gap-3 {
-  gap: 0.75rem;
 }
 
 .overflow-hidden {
@@ -1176,6 +1156,11 @@ video {
   padding-right: 103px;
 }
 
+.px-\[16px\] {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -1196,19 +1181,9 @@ video {
   padding-bottom: 0.75rem;
 }
 
-.px-\[18px\] {
-  padding-left: 18px;
-  padding-right: 18px;
-}
-
 .py-\[17px\] {
   padding-top: 17px;
   padding-bottom: 17px;
-}
-
-.px-\[16px\] {
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 .pb-16 {
@@ -1273,10 +1248,6 @@ video {
 
 .pt-\[17px\] {
   padding-top: 17px;
-}
-
-.pt-\[16px\] {
-  padding-top: 16px;
 }
 
 .text-left {
@@ -1462,4 +1433,9 @@ ul {
 .input_container:hover > .glass_bg,
 li:hover {
   background-color: #FFD15B;
+}
+
+.recipe_gallery::after {
+  content: '';
+  flex: auto;
 }

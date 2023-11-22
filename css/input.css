@@ -30,3 +30,8 @@ ul {
 li:hover {
     background-color: #FFD15B;
 }
+
+.recipe_gallery::after {
+    content: '';
+    flex: auto;
+  }

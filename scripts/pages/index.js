@@ -7,12 +7,16 @@ import {
 
 import { createRecipeCards } from "../template/recipetemplate.js"
 
-import { closeMenuButton } from "../components/components.js"
+import { 
+  closeMenuButton } from "../components/components.js"
 
 import { 
   displayMenuElement,
   displayChosenElement,
-  removeChosenElement  } from "../template/menutemplate.js"
+  removeChosenElement,
+  moveElementToTop,
+  moveElementToOriginalPosition,
+   } from "../template/menutemplate.js"
 
 // Event listener pour les boutons dropdown des filtres
 function listenToDropButton() {
@@ -29,22 +33,41 @@ function listenToComponent() {
   const optionsButtons = document.querySelectorAll(".option")
   optionsButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
-      const componentValue = event.currentTarget.getAttribute("data-value")
-      displayChosenElement("choiced_filter",componentValue)
-      const findParentButton = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
+      const parentElement = event.currentTarget.parentNode;
+      const elementValue = button.parentNode.getAttribute('data-index');
+      const ulElement = button.parentNode.parentNode
+      const findParentButton = ulElement.parentNode.parentNode;
       const findedButton = findParentButton.querySelector("button");
-      closeMenuButton(findedButton)
+      const componentValue = event.currentTarget.getAttribute("data-value")
+
+      if (!parentElement.classList.contains('selected')) {
+        displayChosenElement("choiced_filter",componentValue, ulElement.id, elementValue)
+        moveElementToTop(elementValue,ulElement)
+        closeMenuButton(findedButton)
+      } else {
+        moveElementToOriginalPosition(elementValue,ulElement)
+        console.log("voila elementValue",elementValue)
+        console.log("voila ulElement",ulElement)
+        removeChosenElement(componentValue)
+      }
     })
   })
 }
 
+
 // Fonction qui écoute les boutons des listes et renvoi l'ingredient, l'appareil ou l'ustensil cliqué
-function initremoveComponent() {
+function removeComponent() {
   const divLocalisation = document.querySelector(".choiced_filter")
   divLocalisation.addEventListener("click", (event) => {
-    const target = event.target
-    if (target.classList.contains("chosen_element")) {
-      removeChosenElement(target)
+    const chosenElement = event.target.closest(".chosen_element")
+    if (chosenElement) {
+      const originalUlId = chosenElement.getAttribute('original-ul');
+      const originalUlValue = document.getElementById(originalUlId);
+      const dataIndexValue = event.target.getAttribute('data-index')
+      moveElementToOriginalPosition (dataIndexValue,originalUlValue)
+      console.log("voila dataIndexValue",dataIndexValue)
+      console.log("voila originalUlValue",originalUlValue)
+      removeChosenElement(chosenElement)
     }
   })
 }
@@ -55,4 +78,4 @@ displayMenuElement("ustensils_select", createArraysUstensils)
 createRecipeCards(recipes)
 listenToDropButton() 
 listenToComponent()
-initremoveComponent() 
+removeComponent() 
