@@ -1,4 +1,10 @@
-// Cette fonction gère l'affichage des données des champs de recherche
+/**
+ * Displays menu elements for element, appliance and ustensils selection for filtering recipes.
+ *
+ * @param {string} ulClass - The class name of the UL element.
+ * @param {Function} elementArrayFunction - A function that returns an array of elements to be displayed.
+ *
+ */
 export function displayMenuElement(ulClass, elementArrayFunction) {
     const ulLocalisation = document.querySelector(`.${ulClass}`)
     const allElements = elementArrayFunction()
@@ -14,6 +20,13 @@ export function displayMenuElement(ulClass, elementArrayFunction) {
     ulLocalisation.innerHTML = newElements.join("")
 }
 
+/**
+ * Moves the specified element to the top of the given Menu list .
+ *
+ * @param {number} elementIndex - The index of the element to be moved.
+ * @param {HTMLElement} ulElement - The UL element from the element.
+ *
+ */
 export function moveElementToTop(elementIndex, ulElement) {
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`);
   if (elementToMove && ulElement) {
@@ -25,6 +38,13 @@ export function moveElementToTop(elementIndex, ulElement) {
   }
 }
 
+/**
+ * Moves the specified element to its original position in its list.
+ *
+ * @param {number} elementIndex - The index of the element to be moved.
+ * @param {HTMLElement} ulElement - The unordered list (UL) element.
+ *
+ */
 export function moveElementToOriginalPosition(elementIndex, ulElement) {
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`);
   const originalIndex = parseInt(elementToMove.getAttribute('data-original-index'));
@@ -43,6 +63,12 @@ export function moveElementToOriginalPosition(elementIndex, ulElement) {
   }
 }
 
+/**
+ * Removes the list chosen element based on the provided element if removing from the menu
+ * or a value if removing from the button choosed list .
+ * @param {Element|string} elementOrValue - The element or value to be removed.
+ *
+ */
 export function removeChosenElement(elementOrValue) {
   if (elementOrValue) {
     const divLocalisations = document.querySelectorAll(".chosen_element");
@@ -61,6 +87,15 @@ export function removeChosenElement(elementOrValue) {
   }
 }
 
+/**
+ * Displays the chosen element as a button in a container on the webpage.
+ *
+ * @param {string} domDisplay - The class name of the container where the chosen element will be displayed.
+ * @param {string} elementName - The name of the chosen element.
+ * @param {string} originalUl - The ID of the ul source.
+ * @param {number} originalIndex - The original index of the chosen element.
+ *
+ */
 export function displayChosenElement(domDisplay, elementName, originalUl, originalIndex) {
   const divLocalisation = document.querySelector(`.${domDisplay}`)
   const newElement = 

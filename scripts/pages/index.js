@@ -18,7 +18,9 @@ import {
   moveElementToOriginalPosition,
    } from "../template/menutemplate.js"
 
-// Event listener pour les boutons dropdown des filtres
+/**
+ * Adds event listeners for the global dropdown listing button of filters.
+ */
 function listenToDropButton() {
   const buttons = document.querySelectorAll(".common-btn")
   buttons.forEach((dropButton) => {
@@ -28,7 +30,9 @@ function listenToDropButton() {
   })
 }
 
-// Fonction qui écoute les boutons des listes et l'ingredient, l'appareil ou l'ustensil cliqué
+/**
+ * Adds event listeners on menu's filters elements ( ingredient, appliance or ustensil) to handle click events.
+ */
 function listenToComponent() {
   const optionsButtons = document.querySelectorAll(".option")
   optionsButtons.forEach((button) => {
@@ -52,8 +56,10 @@ function listenToComponent() {
   })
 }
 
-
-// Fonction qui écoute les boutons des listes et renvoi l'ingredient, l'appareil ou l'ustensil cliqué
+/**
+ * Adds an event listener to button from choiced filter container to remove the button when clicked.
+ * Also replace element in its original place in menu.
+ */
 function removeComponent() {
   const divLocalisation = document.querySelector(".choiced_filter")
   divLocalisation.addEventListener("click", (event) => {
@@ -63,8 +69,6 @@ function removeComponent() {
       const originalUlValue = document.getElementById(originalUlId);
       const dataIndexValue = chosenElement.getAttribute('data-index')
       moveElementToOriginalPosition (dataIndexValue,originalUlValue)
-      console.log("voila dataIndexValue",dataIndexValue)
-      console.log("voila originalUlValue",originalUlValue)
       removeChosenElement(chosenElement)
     }
   })

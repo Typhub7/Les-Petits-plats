@@ -33,5 +33,5 @@ li:hover {
 
 .recipe_gallery::after {
     content: '';
-    flex: auto;
+    width: 380px;
   }

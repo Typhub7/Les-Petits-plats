@@ -1,12 +1,14 @@
 import { RecipesCard } from '../class/recipemodel.js'
 
-/** Generates an HTML template for displaying Recipe Card information.
+//let totalRecipes = 0
+
+/**
+ * Generates HTML template for displaying a recipe card based on the provided recipe data.
+ *
  * @function
  * @param {Object} recipes - The recipes's list.
  * @returns {Object} - An object containing the HTML template.
  */
-
-//let totalRecipes = 0
 
 function recipeTemplate(recipe) {
 
@@ -35,8 +37,11 @@ function recipeTemplate(recipe) {
     return {newRecipeCard}
 }  
 
-// Fonction pour créer les cartes de recette à partir d'un tableau de recettes
-
+/**
+ * Creates recipe cards based on the provided recipes and updates the recipe count on the webpage.
+ *
+ * @param {Array<Object>} recipes - An array of recipe objects.
+ */
 export function createRecipeCards(recipes) {
     const recipeCards = recipes.map(recipe => new RecipesCard(recipe))
     const recipesGallery = document.querySelector(".recipe_gallery")
@@ -47,9 +52,12 @@ export function createRecipeCards(recipes) {
    updateRecipeCount(recipeCards.length)
 }
 
-// Fonction pour mettre à jour le nombre de recettes affichées
+/**
+ * Updates the displayed recipe count on the webpage.
+ *
+ * @param {number} length - The number of recipes to display.
+ */
 function updateRecipeCount(length) {
   const recipeCountElement = document.getElementById("recipeCount")
   recipeCountElement.textContent = `${length} recettes`
-
 }
