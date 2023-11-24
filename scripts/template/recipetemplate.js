@@ -1,4 +1,5 @@
 import { RecipesCard } from '../class/recipemodel.js'
+import { globalFilterAll } from '../search/globalsearch.js'
 
 //let totalRecipes = 0
 
@@ -43,14 +44,29 @@ function recipeTemplate(recipe) {
  * @param {Array<Object>} recipes - An array of recipe objects.
  */
 export function createRecipeCards(recipes) {
-    const recipeCards = recipes.map(recipe => new RecipesCard(recipe))
-    const recipesGallery = document.querySelector(".recipe_gallery")
-    recipeCards.forEach(recipeCard => {
-        const card = recipeTemplate(recipeCard)
-        recipesGallery.innerHTML += card.newRecipeCard
-   })
-   updateRecipeCount(recipeCards.length)
+  const recipeCards = recipes.map(recipe => new RecipesCard(recipe))
+  const recipesGallery = document.querySelector(".recipe_gallery")
+  /*recipeCards.forEach(recipeCard => {
+      const card = recipeTemplate(recipeCard)
+      recipesGallery.innerHTML += card.newRecipeCard
+  })*/
+  const cardsHtml = recipeCards.map(recipeCard => recipeTemplate(recipeCard).newRecipeCard).join('')
+  recipesGallery.innerHTML = cardsHtml
+  updateRecipeCount(recipeCards.length)
 }
+
+export function listenToGlobalInput() {
+  const inputElement = document.querySelector("#globalSearchInput")
+  inputElement.addEventListener("input", (event) => {
+    const inputValue = event.target.value
+    if (inputValue.length >= 3) {
+      const allFilteredRecipes = globalFilterAll(inputValue)
+      createRecipeCards(allFilteredRecipes)
+    } else {
+      // Si la longueur de l'input est inférieure à 3, vous pouvez effectuer d'autres actions ici
+      // Par exemple, réinitialiser l'affichage ou ne rien faire
+    }
+})}
 
 /**
  * Updates the displayed recipe count on the webpage.

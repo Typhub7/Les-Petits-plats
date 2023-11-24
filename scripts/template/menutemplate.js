@@ -5,13 +5,13 @@
  * @param {Function} elementArrayFunction - A function that returns an array of elements to be displayed.
  *
  */
-export function displayMenuElement(ulClass, elementArrayFunction) {
+export function displayMenuElement(ulClass,idMenu, elementArrayFunction) {
     const ulLocalisation = document.querySelector(`.${ulClass}`)
     const allElements = elementArrayFunction()
   
     ulLocalisation.innerHTML = ""
     const newElements = allElements.map((item, index) => {
-      return `<li class="element py-1.5 pl-4 relative" data-index="${index}" data-original-index="${index}"> 
+      return `<li class="element py-1.5 pl-4 relative" data-index="${index}" data-original-index="${index}" id-original="${idMenu}"> 
                 <button class="option text-left w-4/5" data-value="${item}" >${item}</button>
                 <i class="fa-solid fa-circle-xmark invisible absolute right-5 top-[35%]"></i>
               </li>`
@@ -21,7 +21,7 @@ export function displayMenuElement(ulClass, elementArrayFunction) {
 }
 
 /**
- * Moves the specified element to the top of the given Menu list .
+ * Moves the specified element to the top of the element list .
  *
  * @param {number} elementIndex - The index of the element to be moved.
  * @param {HTMLElement} ulElement - The UL element from the element.
@@ -64,7 +64,8 @@ export function moveElementToOriginalPosition(elementIndex, ulElement) {
 }
 
 /**
- * Removes the list chosen element based on the provided element if removing from the menu
+ * Removes the list chosen element based on :
+ *  the provided element if removing from the menu
  * or a value if removing from the button choosed list .
  * @param {Element|string} elementOrValue - The element or value to be removed.
  *

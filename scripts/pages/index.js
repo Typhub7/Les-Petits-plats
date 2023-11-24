@@ -1,23 +1,11 @@
+import { createArraysIngredient, createArraysAppliances, createArraysUstensils} from "../api/recipesdata.js"
+
+import { createRecipeCards, listenToGlobalInput } from "../template/recipetemplate.js"
+
+import { closeMenuButton } from "../components/components.js"
+
+import { displayMenuElement, displayChosenElement, removeChosenElement, moveElementToTop, moveElementToOriginalPosition } from "../template/menutemplate.js"
 import { recipes } from "../../data/recipes.js"
-import {
-  createArraysIngredient,
-  createArraysAppliances,
-  createArraysUstensils,
-} from "../api/recipesdata.js"
-
-import { createRecipeCards } from "../template/recipetemplate.js"
-
-import { 
-  closeMenuButton } from "../components/components.js"
-
-import { 
-  displayMenuElement,
-  displayChosenElement,
-  removeChosenElement,
-  moveElementToTop,
-  moveElementToOriginalPosition,
-   } from "../template/menutemplate.js"
-
 /**
  * Adds event listeners for the global dropdown listing button of filters.
  */
@@ -37,12 +25,13 @@ function listenToComponent() {
   const optionsButtons = document.querySelectorAll(".option")
   optionsButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
-      const parentElement = event.currentTarget.parentNode;
-      const elementValue = button.parentNode.getAttribute('data-index');
-      const ulElement = button.parentNode.parentNode
-      const findParentButton = ulElement.parentNode.parentNode;
-      const findedButton = findParentButton.querySelector("button");
       const componentValue = event.currentTarget.getAttribute("data-value")
+      const elementValue = button.parentNode.getAttribute('data-index')
+      const parentElement = event.currentTarget.parentNode 
+      const ulElement = button.parentNode.parentNode
+      const findParentButton = ulElement.parentNode.parentNode
+      const findedButton = findParentButton.querySelector("button")
+
 
       if (!parentElement.classList.contains('selected')) {
         displayChosenElement("choiced_filter",componentValue, ulElement.id, elementValue)
@@ -74,10 +63,11 @@ function removeComponent() {
   })
 }
 
-displayMenuElement("ingredient_select", createArraysIngredient)
-displayMenuElement("appliances_select", createArraysAppliances)
-displayMenuElement("ustensils_select", createArraysUstensils)
+displayMenuElement("ingredient_select","i-selection", createArraysIngredient)
+displayMenuElement("appliances_select","a-selection", createArraysAppliances)
+displayMenuElement("ustensils_select","u-selection", createArraysUstensils)
 createRecipeCards(recipes)
+listenToGlobalInput()
 listenToDropButton() 
 listenToComponent()
 removeComponent() 
