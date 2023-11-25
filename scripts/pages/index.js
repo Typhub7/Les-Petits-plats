@@ -1,11 +1,10 @@
 import { createArraysIngredient, createArraysAppliances, createArraysUstensils} from "../api/recipesdata.js"
-
-import { createRecipeCards, listenToGlobalInput } from "../template/recipetemplate.js"
-
+import { createRecipeCards } from "../template/recipetemplate.js"
 import { closeMenuButton } from "../components/components.js"
-
+import { globalFilterAll } from '../search/globalsearch.js'
 import { displayMenuElement, displayChosenElement, removeChosenElement, moveElementToTop, moveElementToOriginalPosition } from "../template/menutemplate.js"
 import { recipes } from "../../data/recipes.js"
+
 /**
  * Adds event listeners for the global dropdown listing button of filters.
  */
@@ -63,9 +62,32 @@ function removeComponent() {
   })
 }
 
-displayMenuElement("ingredient_select","i-selection", createArraysIngredient)
-displayMenuElement("appliances_select","a-selection", createArraysAppliances)
-displayMenuElement("ustensils_select","u-selection", createArraysUstensils)
+function listenToGlobalInput() {
+  const inputElement = document.querySelector("#globalSearchInput")
+  inputElement.addEventListener("input", (event) => {
+    const inputValue = event.target.value
+    if (inputValue.length >= 3) {
+      const allFilteredRecipes = globalFilterAll(inputValue)
+      if (allFilteredRecipes.length > 0) {
+        createRecipeCards(allFilteredRecipes)
+      } else {
+        createRecipeCards(allFilteredRecipes)
+        displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.");
+      }
+    }
+  });
+}
+
+function displayErrorMessage(message) {
+  const errorMessageElement = document.createElement("div")
+  errorMessageElement.classList.add("color-black", "font-bold","font-['Anton']", "h-[300px]");
+  errorMessageElement.textContent = message
+  document.querySelector(".recipe_gallery").appendChild(errorMessageElement)
+}
+
+displayMenuElement("ingredient_select","i-selection", createArraysIngredient(recipes))
+displayMenuElement("appliances_select","a-selection", createArraysAppliances(recipes))
+displayMenuElement("ustensils_select","u-selection", createArraysUstensils(recipes))
 createRecipeCards(recipes)
 listenToGlobalInput()
 listenToDropButton() 

@@ -840,6 +840,10 @@ video {
   height: 81.6px;
 }
 
+.h-\[300px\] {
+  height: 300px;
+}
+
 .max-h-\[215px\] {
   max-height: 215px;
 }
@@ -1175,6 +1179,10 @@ video {
   padding: 0.75rem;
 }
 
+.p-4 {
+  padding: 1rem;
+}
+
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -1378,6 +1386,11 @@ video {
 .text-zinc-900 {
   --tw-text-opacity: 1;
   color: rgb(24 24 27 / var(--tw-text-opacity));
+}
+
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .underline {

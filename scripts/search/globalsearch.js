@@ -21,6 +21,7 @@ export const globalFilterIngredients = (globalInputText) =>
     );
 
 
+
 export const globalFilterAll = (globalInputText) => {
     const textFilteredRecipes = globalFilterText(globalInputText)
     const applianceFilteredRecipes = globalFilterAppliance(globalInputText)

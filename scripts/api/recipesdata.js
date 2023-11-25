@@ -1,16 +1,14 @@
-import { recipes } from '../../data/recipes.js'
-
-export const createArraysIngredient = () => {
+export const createArraysIngredient = (recipes) => {
     const ingredientsRetrieved = retrieveIngredient(recipes)       
     return cleanComponent(ingredientsRetrieved)
 }
 
-export const createArraysAppliances = () => {
+export const createArraysAppliances = (recipes) => {
     const appliancesRetrieved = retrieveAppliance(recipes)         
     return cleanComponent(appliancesRetrieved)
 }
 
-export const createArraysUstensils = ()  =>  {
+export const createArraysUstensils = (recipes)  =>  {
     const ustensilsRetrieved = retrieveUstensil(recipes)      
     return cleanComponent(ustensilsRetrieved)
 }
@@ -27,7 +25,7 @@ const retrieveIngredient = (recipes) =>
 // Fonction qui extrait les ustensiles du tableau de recettes
 const retrieveUstensil = (recipes)  => 
     recipes.flatMap(recipe => recipe.ustensils)
-       
+      
 // Fonction qui supprime les espaces blancs au début et à la fin de chaque ingrédient
 const removeSpaces = (components) => 
     components.map(component => component.trim().replace(/\s+/g, " "))

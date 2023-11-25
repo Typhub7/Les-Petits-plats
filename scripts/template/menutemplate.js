@@ -7,7 +7,7 @@
  */
 export function displayMenuElement(ulClass,idMenu, elementArrayFunction) {
     const ulLocalisation = document.querySelector(`.${ulClass}`)
-    const allElements = elementArrayFunction()
+    const allElements = elementArrayFunction
   
     ulLocalisation.innerHTML = ""
     const newElements = allElements.map((item, index) => {
