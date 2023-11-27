@@ -20,6 +20,9 @@ export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filtered
 }
 
 export function updateMenuDisplay(newIngredients,newAppliances,newUstensiles) {
+  console.log("newIngredients",newIngredients)
+  console.log("newAppliances",newAppliances)
+  console.log("newUstensiles",newUstensiles)
   displayMenuElement("ingredient_select","i-selection", createArraysIngredient(newIngredients))
   displayMenuElement("appliances_select","a-selection", createArraysAppliances(newAppliances))
   displayMenuElement("ustensils_select","u-selection", createArraysUstensils(newUstensiles))
