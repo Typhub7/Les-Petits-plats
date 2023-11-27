@@ -37,7 +37,7 @@ const caseGuard = (components) =>
 const removeDouble = (components) =>
     Array.from(new Set(components))
 
-const cleanComponent = (components) => {
+export const cleanComponent = (components) => {
     const spaceRemoved = removeSpaces(components)
     const capitalised = caseGuard(spaceRemoved).sort()
     const cleanedComponents = removeDouble(capitalised)  

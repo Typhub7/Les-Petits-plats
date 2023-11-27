@@ -1,9 +1,10 @@
 import { createArraysIngredient, createArraysAppliances, createArraysUstensils} from "../api/recipesdata.js"
 import { createRecipeCards } from "../template/recipetemplate.js"
 import { closeMenuButton } from "../components/components.js"
-import { globalFilterAll } from '../search/globalsearch.js'
-import { displayMenuElement, displayChosenElement, removeChosenElement, moveElementToTop, moveElementToOriginalPosition } from "../template/menutemplate.js"
+import { globalFilterAll, globalFilterAppliance, globalFilterIngredients, globalFilterUstensils } from '../search/globalsearch.js'
+import { displayMenuElement, displayChosenElement, removeChosenElement, moveElementToTop, moveElementToOriginalPosition, updateMenuDisplay } from "../template/menutemplate.js"
 import { recipes } from "../../data/recipes.js"
+import { ingredientsFilter } from "../search/ingredientsearch.js"
 
 /**
  * Adds event listeners for the global dropdown listing button of filters.
@@ -30,7 +31,6 @@ function listenToComponent() {
       const ulElement = button.parentNode.parentNode
       const findParentButton = ulElement.parentNode.parentNode
       const findedButton = findParentButton.querySelector("button")
-
 
       if (!parentElement.classList.contains('selected')) {
         displayChosenElement("choiced_filter",componentValue, ulElement.id, elementValue)
@@ -61,6 +61,10 @@ function removeComponent() {
     }
   })
 }
+let isGlobalFiltered = false;
+let applianceFilteredRecipes 
+let ustensilsFilteredRecipes 
+let ingredientsFilteredRecipes
 
 function listenToGlobalInput() {
   const inputElement = document.querySelector("#globalSearchInput")
@@ -68,19 +72,44 @@ function listenToGlobalInput() {
     const inputValue = event.target.value
     if (inputValue.length >= 3) {
       const allFilteredRecipes = globalFilterAll(inputValue)
-      if (allFilteredRecipes.length > 0) {
-        createRecipeCards(allFilteredRecipes)
-      } else {
-        createRecipeCards(allFilteredRecipes)
+      applianceFilteredRecipes = globalFilterAppliance(inputValue)
+      ustensilsFilteredRecipes = globalFilterUstensils(inputValue)
+      ingredientsFilteredRecipes = globalFilterIngredients(inputValue)
+      isGlobalFiltered = true;
+      createRecipeCards(allFilteredRecipes)
+      updateMenuDisplay(ingredientsFilteredRecipes,applianceFilteredRecipes,ustensilsFilteredRecipes)
+      listenToComponent()
+      if (!allFilteredRecipes.length) {
         displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.");
       }
     }
-  });
+  })
+}
+
+function listenToIngredientSearch() {
+  const inputIngredient = document.querySelector("#ingredientsSearchInput")
+  inputIngredient.addEventListener("input", (event) => {
+    const inputValue = event.target.value
+    if (!isGlobalFiltered) {
+      /*const { filteredRecipesbyIngredient, ingredientFiltered } = ingredientsFilter(recipes,inputValue)
+      console.log("filteredRecipesbyIngredient log",filteredRecipesbyIngredient);
+      console.log("ingredientFiltered log",ingredientFiltered);
+      displayMenuElement("ingredient_select","i-selection", null, ingredientFiltered)
+      createRecipeCards(filteredRecipesbyIngredient)*/
+    } else {
+      const  ingredientFiltered = ingredientsFilter(ingredientsFilteredRecipes,inputValue)
+      //console.log("filteredRecipesbyIngredient log",filteredRecipesbyIngredient);
+      console.log("ingredientFiltered log",ingredientFiltered);
+      displayMenuElement("ingredient_select","i-selection", null, ingredientFiltered)
+      //createRecipeCards(filteredRecipesbyIngredient)
+    }
+    listenToComponent()
+  })
 }
 
 function displayErrorMessage(message) {
   const errorMessageElement = document.createElement("div")
-  errorMessageElement.classList.add("color-black", "font-bold","font-['Anton']", "h-[300px]");
+  errorMessageElement.classList.add("color-black", "font-bold","font-['Anton']","text-5xl", "leading-[3.5rem]", "h-[250px]");
   errorMessageElement.textContent = message
   document.querySelector(".recipe_gallery").appendChild(errorMessageElement)
 }
@@ -93,3 +122,4 @@ listenToGlobalInput()
 listenToDropButton() 
 listenToComponent()
 removeComponent() 
+listenToIngredientSearch()

@@ -20,8 +20,6 @@ export const globalFilterIngredients = (globalInputText) =>
     recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(globalInputText.toLowerCase()))
     );
 
-
-
 export const globalFilterAll = (globalInputText) => {
     const textFilteredRecipes = globalFilterText(globalInputText)
     const applianceFilteredRecipes = globalFilterAppliance(globalInputText)

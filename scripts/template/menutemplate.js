@@ -1,13 +1,12 @@
-/**
- * Displays menu elements for element, appliance and ustensils selection for filtering recipes.
- *
+import { createArraysAppliances, createArraysIngredient, createArraysUstensils } from "../api/recipesdata.js"
+
+/** Displays menu elements for element, appliance and ustensils selection for filtering recipes.
  * @param {string} ulClass - The class name of the UL element.
  * @param {Function} elementArrayFunction - A function that returns an array of elements to be displayed.
- *
  */
-export function displayMenuElement(ulClass,idMenu, elementArrayFunction) {
+export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filteredElements) {
     const ulLocalisation = document.querySelector(`.${ulClass}`)
-    const allElements = elementArrayFunction
+    const allElements = filteredElements || elementArrayFunction;
   
     ulLocalisation.innerHTML = ""
     const newElements = allElements.map((item, index) => {
@@ -20,12 +19,16 @@ export function displayMenuElement(ulClass,idMenu, elementArrayFunction) {
     ulLocalisation.innerHTML = newElements.join("")
 }
 
-/**
- * Moves the specified element to the top of the element list .
- *
+export function updateMenuDisplay(newIngredients,newAppliances,newUstensiles) {
+  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(newIngredients))
+  displayMenuElement("appliances_select","a-selection", createArraysAppliances(newAppliances))
+  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(newUstensiles))
+}
+
+
+/** Moves the specified element to the top of the element list .
  * @param {number} elementIndex - The index of the element to be moved.
  * @param {HTMLElement} ulElement - The UL element from the element.
- *
  */
 export function moveElementToTop(elementIndex, ulElement) {
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`);
@@ -38,12 +41,9 @@ export function moveElementToTop(elementIndex, ulElement) {
   }
 }
 
-/**
- * Moves the specified element to its original position in its list.
- *
+/** Moves the specified element to its original position in its list.
  * @param {number} elementIndex - The index of the element to be moved.
  * @param {HTMLElement} ulElement - The unordered list (UL) element.
- *
  */
 export function moveElementToOriginalPosition(elementIndex, ulElement) {
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`);
@@ -63,12 +63,10 @@ export function moveElementToOriginalPosition(elementIndex, ulElement) {
   }
 }
 
-/**
- * Removes the list chosen element based on :
+/** Removes the list chosen element based on :
  *  the provided element if removing from the menu
  * or a value if removing from the button choosed list .
  * @param {Element|string} elementOrValue - The element or value to be removed.
- *
  */
 export function removeChosenElement(elementOrValue) {
   if (elementOrValue) {
@@ -88,14 +86,11 @@ export function removeChosenElement(elementOrValue) {
   }
 }
 
-/**
- * Displays the chosen element as a button in a container on the webpage.
- *
+/** Displays the chosen element as a button in a container on the webpage.
  * @param {string} domDisplay - The class name of the container where the chosen element will be displayed.
  * @param {string} elementName - The name of the chosen element.
  * @param {string} originalUl - The ID of the ul source.
  * @param {number} originalIndex - The original index of the chosen element.
- *
  */
 export function displayChosenElement(domDisplay, elementName, originalUl, originalIndex) {
   const divLocalisation = document.querySelector(`.${domDisplay}`)
