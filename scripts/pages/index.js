@@ -6,6 +6,12 @@ import { displayMenuElement, displayChosenElement, removeChosenElement, moveElem
 import { recipes } from "../../data/recipes.js"
 import { appliancesFilterByDropdown, dropdownFilterAppliances, dropdownFilterIngredients, ingredientsFilterByDropdown, ustensilsFilterByDropdown } from "../search/ingredientsearch.js"
 
+let isGlobalFiltered = false;
+let allFilteredRecipes = []
+let filteredRecipesByUstensilInput = []
+let filteredRecipesByApplianceInput = []
+let filteredRecipesByIngredientInput = []
+
 /** Adds event listeners for the global dropdown listing button of filters.
  */
 function listenToDropButton() {
@@ -20,26 +26,28 @@ function listenToDropButton() {
 /** Adds event listeners on menu's filters elements ( ingredient, appliance or ustensil) to handle click events.
  */
 function listenToComponent() {
-  const optionsButtons = document.querySelectorAll(".option")
+  const optionsButtons = document.querySelectorAll(".option");
   optionsButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const componentValue = event.currentTarget.getAttribute("data-value")
-      const elementValue = button.parentNode.getAttribute('data-index')
-      const parentElement = event.currentTarget.parentNode 
-      const ulElement = button.parentNode.parentNode
-      const findParentButton = ulElement.parentNode.parentNode
-      const findedButton = findParentButton.querySelector("button")
+    button.addEventListener("click", handleOptionClick);
+  });
+}
 
-      if (!parentElement.classList.contains('selected')) {
-        displayChosenElement("choiced_filter",componentValue, ulElement.id, elementValue)
-        moveElementToTop(elementValue,ulElement)
-        closeMenuButton(findedButton)
-      } else {
-        moveElementToOriginalPosition(elementValue,ulElement)
-        removeChosenElement(componentValue)
-      }
-    })
-  })
+function handleOptionClick(event) {
+  const componentValue = event.currentTarget.getAttribute("data-value");
+  const elementValue = event.currentTarget.parentNode.getAttribute('data-index');
+  const parentElement = event.currentTarget.parentNode;
+  const ulElement = event.currentTarget.parentNode.parentNode;
+  const findParentButton = ulElement.parentNode.parentNode;
+  const findedButton = findParentButton.querySelector("button");
+
+  if (!parentElement.classList.contains('selected')) {
+    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue);
+    moveElementToTop(elementValue, ulElement);
+    closeMenuButton(findedButton);
+  } else {
+    moveElementToOriginalPosition(elementValue, ulElement);
+    removeChosenElement(componentValue);
+  }
 }
 
 /** Adds an event listener to button from choiced filter container to remove the button when clicked.
@@ -59,50 +67,6 @@ function removeComponent() {
   })
 }
 
-let isGlobalFiltered = false;
-let allFilteredRecipes = []
-let filteredRecipesByUstensilInput = []
-let filteredRecipesByApplianceInput = []
-let filteredRecipesByIngredientInput = []
-
-function handleGlobalInputChange(event) {
-  const inputValue = event.target.value;
-  if (inputValue.length >= 3) {
-    allFilteredRecipes = globalFilterAll(inputValue);
-    isGlobalFiltered = true;
-    createRecipeCards(allFilteredRecipes);
-    updateMenuDisplay(allFilteredRecipes);
-    listenToComponent();
-    if (!allFilteredRecipes.length) {
-      displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.");
-    }
-  }
-}
-
-function handleIngredientInputChange(event, recipesData) {
-  const inputValueIngredient = event.target.value;
-  filteredRecipesByIngredientInput = dropdownFilterIngredients(recipesData,inputValueIngredient)
-  const uniqueIngredients = ingredientsFilterByDropdown(recipesData, inputValueIngredient)
-  displayMenuElement("ingredient_select", "i-selection", null, uniqueIngredients)
-  filterAndDisplayResults()
-}
-
-function handleApplianceInputChange(event, recipesData) {
-  const inputValueAppliance = event.target.value;
-  filteredRecipesByApplianceInput = dropdownFilterAppliances(recipesData, inputValueAppliance)
-  const uniqueAppliances  = appliancesFilterByDropdown(recipesData, inputValueAppliance)
-  displayMenuElement("appliances_select", "a-selection", null, uniqueAppliances);
-  filterAndDisplayResults()
-}
-
-function handleUstensilInputChange(event, recipesData) {
-  const inputValueUstensil = event.target.value;
-  filteredRecipesByUstensilInput = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
-  const uniqueUstensils = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
-  displayMenuElement("ustensils_select", "u-selection", null, uniqueUstensils);
-  filterAndDisplayResults()
-}
-
 function listenToGlobalInput() {
   const inputElement = document.querySelector("#globalSearchInput");
   inputElement.addEventListener("input", handleGlobalInputChange);
@@ -112,10 +76,10 @@ function listenToIngredientSearch() {
   const inputIngredient = document.querySelector("#ingredientsSearchInput");
   inputIngredient.addEventListener("input", (event) => {
     if (!isGlobalFiltered) {
-      handleIngredientInputChange(event, recipes);
-    } else {
-      handleIngredientInputChange(event, allFilteredRecipes);
-    }
+      allFilteredRecipes = recipes
+      isGlobalFiltered = false
+    } 
+    handleIngredientInputChange(event, allFilteredRecipes);
   });
 }
 
@@ -141,15 +105,77 @@ function listenToUstensilSearch() {
   });
 }
 
-function filterAndDisplayResults() {
 
-  // Intersection des ensembles avec l'opérateur &&
-  console.log("filteredRecipesByIngredientInput",filteredRecipesByIngredientInput)
-  let recettesFinales = filteredRecipesByIngredientInput.filter(recette =>
-    filteredRecipesByApplianceInput.includes(recette) && filteredRecipesByUstensilInput.includes(recette)
-  )
-  console.log("recettesFinales",recettesFinales)
-  createRecipeCards(recettesFinales);
+function handleGlobalInputChange(event) {
+  const inputValue = event.target.value;
+  if (inputValue.length >= 3) {
+    allFilteredRecipes = globalFilterAll(inputValue);
+    isGlobalFiltered = true;
+    createRecipeCards(allFilteredRecipes);
+    updateMenuDisplay(allFilteredRecipes);
+    listenToComponent();
+    if (!allFilteredRecipes.length) {
+      displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.");
+    }
+  }
+}
+
+function handleIngredientInputChange(event, recipesData) {
+  const inputValueIngredient = event.target.value;
+  filteredRecipesByIngredientInput = dropdownFilterIngredients(recipesData,inputValueIngredient)
+  const uniqueIngredients = ingredientsFilterByDropdown(recipesData, inputValueIngredient)
+  displayMenuElement("ingredient_select", "i-selection", null, uniqueIngredients)
+  listenToComponent()
+  handleIngredientListClick(filteredRecipesByIngredientInput)
+}
+
+function handleIngredientListClick(filteredRecipes) {
+  displayMenuElement("appliances_select", "a-selection", createArraysAppliances(filteredRecipes));
+  displayMenuElement("ustensils_select", "u-selection", createArraysUstensils(filteredRecipes));
+  allFilteredRecipes = filteredRecipes;
+  filterAndDisplayResults(allFilteredRecipes);
+}
+
+/*function handleIngredientInputChange(event, recipesData) {
+  const inputValueIngredient = event.target.value;
+  filteredRecipesByIngredientInput = dropdownFilterIngredients(recipesData,inputValueIngredient)
+  const uniqueIngredients = ingredientsFilterByDropdown(recipesData, inputValueIngredient)
+  // A faire après avoir cliquer sur le bouton
+  displayMenuElement("ingredient_select", "i-selection", null, uniqueIngredients)
+  displayMenuElement("appliances_select","a-selection", createArraysAppliances(filteredRecipesByIngredientInput))
+  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(filteredRecipesByIngredientInput))
+  allFilteredRecipes = filteredRecipesByIngredientInput
+  filterAndDisplayResults(allFilteredRecipes)
+}*/
+
+function handleApplianceInputChange(event, recipesData) {
+  const inputValueAppliance = event.target.value;
+  filteredRecipesByApplianceInput = dropdownFilterAppliances(recipesData, inputValueAppliance)
+  const uniqueAppliances  = appliancesFilterByDropdown(recipesData, inputValueAppliance)
+  // A faire après avoir cliquer sur le bouton
+  displayMenuElement("appliances_select", "a-selection", null, uniqueAppliances);
+  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(filteredRecipesByApplianceInput))
+  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(filteredRecipesByApplianceInput))
+  allFilteredRecipes = filteredRecipesByApplianceInput
+  filterAndDisplayResults(allFilteredRecipes)
+}
+
+function handleUstensilInputChange(event, recipesData) {
+  const inputValueUstensil = event.target.value;
+  filteredRecipesByUstensilInput = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
+  const uniqueUstensils = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
+  displayMenuElement("ustensils_select", "u-selection", null, uniqueUstensils);
+  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(filteredRecipesByUstensilInput))
+  displayMenuElement("appliances_select","a-selection", createArraysAppliances(filteredRecipesByUstensilInput))
+  allFilteredRecipes = filteredRecipesByUstensilInput
+  filterAndDisplayResults(allFilteredRecipes)
+}
+
+
+
+
+function filterAndDisplayResults(recettesFinales) {
+ createRecipeCards(recettesFinales);
   listenToComponent()
 }
 

@@ -2,14 +2,12 @@ import { cleanComponent } from "../api/recipesdata.js";
 
 export const ingredientsFilterByDropdown = (recipesGlobalFilteredOrNot, ingredientsSearchInput) => {
     const filteredRecipesbyIngredient = dropdownFilterIngredients(recipesGlobalFilteredOrNot, ingredientsSearchInput)
-    console.log("filteredRecipesbyIngredient",filteredRecipesbyIngredient)
     const filteredIngredients = filteredRecipesbyIngredient
         .flatMap((recipe) => recipe.ingredients)
         .filter((ingredient) =>
         ingredient.ingredient.toLowerCase().includes(ingredientsSearchInput.toLowerCase()))
         .map((ingredient) => ingredient.ingredient)
     const uniqueIngredients = cleanComponent(filteredIngredients);
-    console.log("uniqueIngredients",uniqueIngredients)
     return uniqueIngredients
 }
 
@@ -28,7 +26,6 @@ export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliance
         .map((appliance) => appliance);
 
     const uniqueAppliances = cleanComponent(filteredAppliances);
-
     return uniqueAppliances
 }
 
@@ -45,7 +42,6 @@ export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsS
         ustensil.toLowerCase().includes(ustensilsSearchInput.toLowerCase()))
         .map((ustensil) => ustensil)
     const uniqueUstensils = cleanComponent(filteredUstensils);
-
     return uniqueUstensils
 }
 
