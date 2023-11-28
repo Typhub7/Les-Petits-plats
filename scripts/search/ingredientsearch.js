@@ -1,29 +1,27 @@
 import { cleanComponent } from "../api/recipesdata.js";
 
-export const ingredientsFilter = (recipesGlobalFilteredOrNot, ingredientsSearchInput) => {
-    const filteredRecipesbyIngredient = smallFilterIngredients(recipesGlobalFilteredOrNot, ingredientsSearchInput)
+export const ingredientsFilterByDropdown = (recipesGlobalFilteredOrNot, ingredientsSearchInput) => {
+    const filteredRecipesbyIngredient = dropdownFilterIngredients(recipesGlobalFilteredOrNot, ingredientsSearchInput)
+    console.log("filteredRecipesbyIngredient",filteredRecipesbyIngredient)
     const filteredIngredients = filteredRecipesbyIngredient
         .flatMap((recipe) => recipe.ingredients)
         .filter((ingredient) =>
         ingredient.ingredient.toLowerCase().includes(ingredientsSearchInput.toLowerCase()))
         .map((ingredient) => ingredient.ingredient)
     const uniqueIngredients = cleanComponent(filteredIngredients);
-
-    return {
-        filteredRecipesbyIngredient,
-        uniqueIngredients,
-    }
+    console.log("uniqueIngredients",uniqueIngredients)
+    return uniqueIngredients
 }
 
-export const smallFilterIngredients = (recipesGlobalFilteredOrNot,ingredientsSearchInput) =>
+export const dropdownFilterIngredients = (recipesGlobalFilteredOrNot,ingredientsSearchInput) =>
     recipesGlobalFilteredOrNot.filter((recipe) =>
     recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(ingredientsSearchInput.toLowerCase()))
     )
 
-export const appliancesFilter = (recipesGlobalFilteredOrNot, appliancesSearchInput) => {
-    const filteredRecipesbyAppliance = smallFilterAppliances(recipesGlobalFilteredOrNot, appliancesSearchInput);
+export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliancesSearchInput) => {
+    const filteredRecipesbyAppliance = dropdownFilterAppliances(recipesGlobalFilteredOrNot, appliancesSearchInput);
     const filteredAppliances = filteredRecipesbyAppliance
-        .map((recipe) => recipe.appliance) // Utiliser map pour obtenir un tableau d'appareils
+        .map((recipe) => recipe.appliance)
         .filter((appliance) =>
             appliance.toLowerCase().includes(appliancesSearchInput.toLowerCase())
         )
@@ -31,19 +29,16 @@ export const appliancesFilter = (recipesGlobalFilteredOrNot, appliancesSearchInp
 
     const uniqueAppliances = cleanComponent(filteredAppliances);
 
-    return {
-        filteredRecipesbyAppliance,
-        uniqueAppliances,
-    };
+    return uniqueAppliances
 }
 
-export const smallFilterAppliances = (recipesGlobalFilteredOrNot, appliancesSearchInput) =>
+export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesSearchInput) =>
     recipesGlobalFilteredOrNot.filter((recipe) =>
         recipe.appliance.toLowerCase().includes(appliancesSearchInput.toLowerCase())
     )
 
-export const ustensilsFilter = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
-    const filteredRecipesbyUstensil = smallFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput)
+export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
+    const filteredRecipesbyUstensil = dropdownFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput)
     const filteredUstensils = filteredRecipesbyUstensil
         .flatMap((recipe) => recipe.ustensils)
         .filter((ustensil) =>
@@ -51,13 +46,10 @@ export const ustensilsFilter = (recipesGlobalFilteredOrNot, ustensilsSearchInput
         .map((ustensil) => ustensil)
     const uniqueUstensils = cleanComponent(filteredUstensils);
 
-    return {
-        filteredRecipesbyUstensil,
-        uniqueUstensils,
-    }
+    return uniqueUstensils
 }
 
-export const smallFilterUstensils = (recipesGlobalFilteredOrNot,ustensilsSearchInput) =>
+export const dropdownFilterUstensils = (recipesGlobalFilteredOrNot,ustensilsSearchInput) =>
     recipesGlobalFilteredOrNot.filter((recipe) =>
     recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(ustensilsSearchInput.toLowerCase()))
     ) 

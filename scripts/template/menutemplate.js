@@ -6,7 +6,8 @@ import { createArraysAppliances, createArraysIngredient, createArraysUstensils }
  */
 export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filteredElements) {
     const ulLocalisation = document.querySelector(`.${ulClass}`)
-    const allElements = filteredElements || elementArrayFunction;
+    const allElements = filteredElements ?? elementArrayFunction;
+    console.log("allElements",allElements)
   
     ulLocalisation.innerHTML = ""
     const newElements = allElements.map((item, index) => {
@@ -19,13 +20,10 @@ export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filtered
     ulLocalisation.innerHTML = newElements.join("")
 }
 
-export function updateMenuDisplay(newIngredients,newAppliances,newUstensiles) {
-  console.log("newIngredients",newIngredients)
-  console.log("newAppliances",newAppliances)
-  console.log("newUstensiles",newUstensiles)
-  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(newIngredients))
-  displayMenuElement("appliances_select","a-selection", createArraysAppliances(newAppliances))
-  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(newUstensiles))
+export function updateMenuDisplay(allFilteredRecipes) {
+  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(allFilteredRecipes))
+  displayMenuElement("appliances_select","a-selection", createArraysAppliances(allFilteredRecipes))
+  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(allFilteredRecipes))
 }
 
 

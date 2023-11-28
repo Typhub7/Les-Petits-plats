@@ -7,7 +7,7 @@ export const globalFilterText = (globalInputText) =>
 
 export const globalFilterAppliance = (globalInputText) => 
     recipes.filter(recipe => 
-    (recipe.appliance.toLowerCase().includes(globalInputText.toLowerCase()))
+    recipe.appliance.toLowerCase().includes(globalInputText.toLowerCase())
     )
 
 export const globalFilterUstensils = (globalInputText) =>
