@@ -1,8 +1,11 @@
 import { createArraysAppliances, createArraysIngredient, createArraysUstensils } from "../api/recipesdata.js"
 
 /** Displays menu elements for element, appliance and ustensils selection for filtering recipes.
+ *
  * @param {string} ulClass - The class name of the UL element.
- * @param {Function} elementArrayFunction - A function that returns an array of elements to be displayed.
+ * @param {string} idMenu - The ID of the menu container.
+ * @param {Function} elementArrayFunction - The function to generate an array of elements (optional).
+ * @param {Array} filteredElements - The array of elements to display in the menu (optional).
  */
 export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filteredElements) {
     const ulLocalisation = document.querySelector(`.${ulClass}`)
@@ -19,6 +22,11 @@ export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filtered
     ulLocalisation.innerHTML = newElements.join("")
 }
 
+/** Updates the display of menu elements for ingredients, appliances, and utensils
+ * based on the provided array of filtered recipes.
+ *
+ * @param {Array} allFilteredRecipes - The array of recipes used to update the menu display.
+ */
 export function updateMenuDisplay(allFilteredRecipes) {
   displayMenuElement("ingredient_select","i-selection", createArraysIngredient(allFilteredRecipes))
   displayMenuElement("appliances_select","a-selection", createArraysAppliances(allFilteredRecipes))

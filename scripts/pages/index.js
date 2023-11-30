@@ -160,10 +160,10 @@ function listenToApplianceChoiceButtons() {
 }
 
 /** Handles the display of recipe, the moving of appliance button 
-* and the new button when an appliance is chosen.
-*
-* @param {Event} event - The click event on an appliance.
-*/
+ * and the new button when an appliance is chosen.
+ *
+ * @param {Event} event - The click event on an appliance.
+**/
 function applianceChosenDisplay(event) {
   const componentValue = event.currentTarget.getAttribute("data-value")
   const parentElement = event.currentTarget.parentNode
