@@ -4,13 +4,17 @@ import { closeMenuButton } from "../components/components.js"
 import { globalFilterAll } from '../search/globalsearch.js'
 import { displayMenuElement, displayChosenElement, removeChosenElement, moveElementToTop, moveElementToOriginalPosition, updateMenuDisplay } from "../template/menutemplate.js"
 import { recipes } from "../../data/recipes.js"
-import { appliancesFilterByDropdown, dropdownFilterAppliances, dropdownFilterIngredients, ingredientsFilterByDropdown, ustensilsFilterByDropdown } from "../search/ingredientsearch.js"
+import { appliancesFilterByDropdown, dropdownFilterAppliances, dropdownFilterIngredients, dropdownFilterUstensils, ingredientsFilterByDropdown, ustensilsFilterByDropdown } from "../search/ingredientsearch.js"
 
 let allFilteredRecipes = recipes
-let savedFilteredRecipes = []
 let filteredRecipesByUstensilInput = []
 let filteredRecipesByApplianceInput = []
 let filteredRecipesByIngredientInput = []
+let activeFilters = {
+  ingredients: [],
+  appliances: [],
+  ustensils: []
+}
 
 /** Listens for click events on the global dropdown listing button of filters.
  */
@@ -19,7 +23,7 @@ function listenToGlobalInput() {
   inputElement.addEventListener("input", recipeAndMenuDiplayGlobalSearch)
 }
 
-/** Handles global search for recipes and updates the component chose display.
+/** Handles global search for recipes and updates the component choose display.
  *
  * @param {Event} event - The input event from the global input.
  */
@@ -29,8 +33,7 @@ function recipeAndMenuDiplayGlobalSearch(event) {
     allFilteredRecipes = globalFilterAll(inputValue)
     createRecipeCards(allFilteredRecipes)
     updateMenuDisplay(allFilteredRecipes)
-    savedFilteredRecipes = allFilteredRecipes
-    listenToComponents
+    listenToComponents()
     if (!allFilteredRecipes.length) {
       displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.")
     }
@@ -72,7 +75,7 @@ function listenToIngredientChoiceButtons() {
   const optionsButtons = document.querySelectorAll("#i-selection .option")
   optionsButtons.forEach((button) => {
     button.addEventListener("click", ingredientChosenDisplay)
-  });
+  })
 }
 
 /** Handles the display of recipe, the moving of ingredient button 
@@ -86,17 +89,19 @@ function ingredientChosenDisplay(event) {
   const elementValue = parentElement.getAttribute('data-index')
   const ulElement = document.querySelector("#i-selection")
   const ingredientMenuButton = document.querySelector(".ingredient_drop")
-  filteredRecipesByIngredientInput = dropdownFilterIngredients(allFilteredRecipes,componentValue)
-  console.log("filteredRecipesByIngredientInput in buttonclick",filteredRecipesByIngredientInput)
-
+  activeFilters.ingredients.push(componentValue)
+  
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
     moveElementToTop(elementValue, ulElement)
-    displayRecipesByIngredientAndUpdateMenu()
+    const recipeToDisplay = displayRecipes()
+    UpdateMenuByIngredient(recipeToDisplay,componentValue)
     closeMenuButton(ingredientMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
-    BacktoRecipesBeforeIngredientAndUpdateMenu()
+    activeFilters.ingredients = activeFilters.ingredients.filter((filter) => filter !== componentValue)
+    const recipeToDisplay = displayRecipes()
+    UpdateMenuByIngredient(recipeToDisplay,componentValue)
     removeChosenElement(componentValue)
   }
 }
@@ -116,26 +121,21 @@ function displayIngredientsFilteredByInput(inputValueIngredient, recipesData) {
 /** Displays menu elements for appliances and utensils based on recipes filtered by the chosen ingredient.
  * Listens to component events, updates the list of filtered recipes, and displays the filtered results.
  */
-function displayRecipesByIngredientAndUpdateMenu() {
+function displayRecipes() {
+  const recipeToDisplay = applyAllFilters()
+  filterAndDisplayResults(recipeToDisplay)
+  return recipeToDisplay
+}
+
+function UpdateMenuByIngredient(recipeToDisplay,componentValue) {
+  filteredRecipesByIngredientInput = dropdownFilterIngredients(recipeToDisplay,componentValue)
   displayMenuElement("appliances_select", "a-selection", createArraysAppliances(filteredRecipesByIngredientInput))
   displayMenuElement("ustensils_select", "u-selection", createArraysUstensils(filteredRecipesByIngredientInput))
   listenToComponents()
-  allFilteredRecipes = filteredRecipesByIngredientInput
-  filterAndDisplayResults(allFilteredRecipes)
-}
-
-/** Restores the list of all filtered recipes to the previously saved state
- * and updates menu elements for appliances, utensils, and displays filtered results.
- */
-function BacktoRecipesBeforeIngredientAndUpdateMenu() {
-  allFilteredRecipes = savedFilteredRecipes
-  displayMenuElement("appliances_select", "a-selection", createArraysAppliances(allFilteredRecipes))
-  displayMenuElement("ustensils_select", "u-selection", createArraysUstensils(allFilteredRecipes))
-  listenToComponents()
-  filterAndDisplayResults(allFilteredRecipes)
 }
 
 /****** APPLIANCE FUNCTION ******/
+
 /** Listens for input events on the search Input of appliance
  *
  * @param {Event} event - The input event in the appliance search input.
@@ -170,16 +170,19 @@ function applianceChosenDisplay(event) {
   const elementValue = parentElement.getAttribute('data-index')
   const ulElement = document.querySelector("#a-selection")
   const applianceMenuButton = document.querySelector(".appliances_drop")
-  filteredRecipesByApplianceInput = dropdownFilterAppliances(allFilteredRecipes,componentValue)
+  activeFilters.appliances.push(componentValue)
 
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
     moveElementToTop(elementValue, ulElement)
-    displayRecipesByApplianceAndUpdateMenu()
+    const recipeToDisplay = displayRecipes()
+    UpdateMenuByAppliance(recipeToDisplay,componentValue)
     closeMenuButton(applianceMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
-    BacktoRecipesBeforeApplianceAndUpdateMenu()
+    activeFilters.appliances = activeFilters.appliances.filter((filter) => filter !== componentValue)
+    const recipeToDisplay = displayRecipes()
+    UpdateMenuByAppliance(recipeToDisplay,componentValue)
     removeChosenElement(componentValue)
   }
 }
@@ -199,23 +202,11 @@ function displayApliancesFilteredByInput(inputValueAppliance, recipesData) {
 /** Displays menu elements for ingredients and utensils based on recipes filtered by the chosen appliance.
  * Listens to component events, updates the list of filtered recipes, and displays the filtered results.
  */
-function displayRecipesByApplianceAndUpdateMenu() {
+function UpdateMenuByAppliance(recipeToDisplay,componentValue) {
+  filteredRecipesByApplianceInput = dropdownFilterAppliances(recipeToDisplay,componentValue)
   displayMenuElement("ingredient_select","i-selection", createArraysIngredient(filteredRecipesByApplianceInput))
   displayMenuElement("ustensils_select","u-selection", createArraysUstensils(filteredRecipesByApplianceInput))
   listenToComponents()
-  allFilteredRecipes = filteredRecipesByApplianceInput
-  filterAndDisplayResults(allFilteredRecipes)
-}
-
-/** Restores the list of all filtered recipes to the previously saved state
- * and updates menu elements for ingrdients, utensils, and displays filtered results.
- */
-function BacktoRecipesBeforeApplianceAndUpdateMenu() {
-  allFilteredRecipes = savedFilteredRecipes
-  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(allFilteredRecipes))
-  displayMenuElement("ustensils_select", "u-selection", createArraysUstensils(allFilteredRecipes))
-  listenToComponents()
-  filterAndDisplayResults(allFilteredRecipes)
 }
 
 /****** USTENSILS FUNCTION ******/
@@ -240,19 +231,7 @@ function listenToUstensilChoiceButtons() {
   const optionsButtons = document.querySelectorAll("#u-selection .option")
   optionsButtons.forEach((button) => {
     button.addEventListener("click", ustensilChosenDisplay)
-  });
-}
-
-/** * Displays menu elements with ustensils filtered by the input value,
- * and sets up new event listeners for the new list of ustensil.
- *
- * @param {string} inputValueIngredient - The input value for ustensil filtering.
- * @param {Array} recipesData - The array of recipes data to filter ustensils from.
- */
-function displayUstensilsFilteredByInput(inputValueUstensil, recipesData) {
-  const uniqueUstensils = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
-  displayMenuElement("ustensils_select", "u-selection", null, uniqueUstensils);
-  listenToUstensilChoiceButtons()
+  })
 }
 
 /** Handles the display of recipe, the moving of ustensil button 
@@ -266,40 +245,42 @@ function ustensilChosenDisplay(event) {
   const elementValue = parentElement.getAttribute('data-index')
   const ulElement = document.querySelector("#u-selection")
   const ustensilMenuButton = document.querySelector(".ustensils_drop")
-  filteredRecipesByUstensilInput = dropdownFilterAppliances(allFilteredRecipes,componentValue)
-
+  activeFilters.ustensils.push(componentValue)
+  
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
     moveElementToTop(elementValue, ulElement)
-    displayRecipesByUstensilAndUpdateMenu()
+    const recipeToDisplay = displayRecipes()
+    UpdateMenuByUstensil(recipeToDisplay,componentValue)
     closeMenuButton(ustensilMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
-    BacktoRecipesBeforeUstensilAndUpdateMenu()
+    activeFilters.ustensils = activeFilters.ustensils.filter((filter) => filter !== componentValue)
+    const recipeToDisplay = displayRecipes()
+    UpdateMenuByUstensil(recipeToDisplay,componentValue)
     removeChosenElement(componentValue)
   }
+}
+/** * Displays menu elements with ustensils filtered by the input value,
+ * and sets up new event listeners for the new list of ustensil.
+ *
+ * @param {string} inputValueIngredient - The input value for ustensil filtering.
+ * @param {Array} recipesData - The array of recipes data to filter ustensils from.
+ */
+function displayUstensilsFilteredByInput(inputValueUstensil, recipesData) {
+  const uniqueUstensils = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
+  displayMenuElement("ustensils_select", "u-selection", null, uniqueUstensils);
+  listenToUstensilChoiceButtons()
 }
 
 /** Displays menu elements for appliances and utensils based on recipes filtered by the chosen ingredient.
  * Listens to component events, updates the list of filtered recipes, and displays the filtered results.
  */
-function displayRecipesByUstensilAndUpdateMenu() {
+function UpdateMenuByUstensil(recipeToDisplay,componentValue) {
+  filteredRecipesByUstensilInput = dropdownFilterAppliances(recipeToDisplay,componentValue)
   displayMenuElement("ingredient_select","i-selection", createArraysIngredient(filteredRecipesByUstensilInput))
   displayMenuElement("appliances_select","a-selection", createArraysAppliances(filteredRecipesByUstensilInput))
   listenToComponents()
-  allFilteredRecipes = filteredRecipesByUstensilInput
-  filterAndDisplayResults(allFilteredRecipes)
-}
-
-/** Restores the list of all filtered recipes to the previously saved state
- * and updates menu elements for appliances, utensils, and displays filtered results.
- */
-function BacktoRecipesBeforeUstensilAndUpdateMenu() {
-  allFilteredRecipes = savedFilteredRecipes
-  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(allFilteredRecipes))
-  displayMenuElement("appliances_select", "a-selection", createArraysAppliances(allFilteredRecipes))
-  listenToComponents()
-  filterAndDisplayResults(allFilteredRecipes)
 }
 
 /** Sets up event listeners for ingredients, appliances, and utensils buttons.
@@ -318,15 +299,43 @@ function removeComponent() {
   const divLocalisation = document.querySelector(".choiced_filter")
   divLocalisation.addEventListener("click", (event) => {
     const chosenElement = event.target.closest(".chosen_element")
+    const componentValue = chosenElement.getAttribute("data-value")
+    console.log("componentValue",componentValue)
     if (chosenElement) {
       const originalUlId = chosenElement.getAttribute('original-ul')
       const originalUlValue = document.getElementById(originalUlId)
       const dataIndexValue = chosenElement.getAttribute('data-index')
       moveElementToOriginalPosition (dataIndexValue,originalUlValue)
-      BacktoRecipesBeforeIngredientAndUpdateMenu()
+      activeFilters.ingredients = activeFilters.ingredients.filter((filter) => filter !== componentValue)
+      const recipeToDisplay = displayRecipes()
+      UpdateMenuByIngredient(recipeToDisplay,componentValue)
       removeChosenElement(chosenElement)
     }
   })
+}
+
+function applyAllFilters() {
+  let filteredRecipes = allFilteredRecipes
+
+  if (activeFilters.ingredients.length > 0) {
+    activeFilters.ingredients.forEach((ingredient) => {
+      filteredRecipes = dropdownFilterIngredients(filteredRecipes, ingredient);
+    })
+  }
+
+  if (activeFilters.appliances.length > 0) {
+    activeFilters.appliances.forEach((appliance) => {
+      filteredRecipes = dropdownFilterAppliances(filteredRecipes, appliance);
+    })
+  }
+
+  if (activeFilters.ustensils.length > 0) {
+    activeFilters.ustensils.forEach((ustensil) => {
+      filteredRecipes = dropdownFilterUstensils(filteredRecipes, ustensil);
+    })
+  }
+
+  return filteredRecipes;
 }
 
 /** Filters recipes and updates the display by creating recipe cards for the provided recipe array.
@@ -335,6 +344,7 @@ function removeComponent() {
  */
 function filterAndDisplayResults(recipeToDisplay) {
  createRecipeCards(recipeToDisplay)
+ console.log("recipeToDisplay dans filteranddisplayresults",recipeToDisplay)
 }
 
 /** Displays an error message on the recipe gallery when no recipe found with global filter.
