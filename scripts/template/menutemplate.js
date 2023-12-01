@@ -1,4 +1,5 @@
 import { createArraysAppliances, createArraysIngredient, createArraysUstensils } from "../api/recipesdata.js"
+import { listenToComponents } from "../pages/index.js"
 
 /** Displays menu elements for element, appliance and ustensils selection for filtering recipes.
  *
@@ -8,18 +9,16 @@ import { createArraysAppliances, createArraysIngredient, createArraysUstensils }
  * @param {Array} filteredElements - The array of elements to display in the menu (optional).
  */
 export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filteredElements) {
-    const ulLocalisation = document.querySelector(`.${ulClass}`)
-    const allElements = filteredElements ?? elementArrayFunction;
-    console.log("allElements",allElements)
-  
-    ulLocalisation.innerHTML = ""
-    const newElements = allElements.map((item, index) => {
-      return `<li class="element py-1.5 pl-4 relative" data-index="${index}" data-original-index="${index}" id-original="${idMenu}"> 
-                <button class="option text-left w-4/5 " data-value="${item}" >${item}</button>
-                <i class="fa-solid fa-circle-xmark invisible absolute right-5 top-[35%]"></i>
-              </li>`
-    })
-    ulLocalisation.innerHTML = newElements.join("")
+  const ulLocalisation = document.querySelector(`.${ulClass}`)
+  const allElements = filteredElements ?? elementArrayFunction
+  ulLocalisation.innerHTML = ""
+  const newElements = allElements.map((item, index) => {
+    return `<li class="element py-1.5 pl-4 relative" data-index="${index}" data-original-index="${index}" id-original="${idMenu}"> 
+              <button class="option text-left w-4/5 " data-value="${item}" >${item}</button>
+              <i class="fa-solid fa-circle-xmark invisible absolute right-5 top-[35%]"></i>
+            </li>`
+  })
+  ulLocalisation.innerHTML = newElements.join("")
 }
 
 /** Updates the display of menu elements for ingredients, appliances, and utensils
@@ -31,6 +30,7 @@ export function updateMenuDisplay(allFilteredRecipes) {
   displayMenuElement("ingredient_select","i-selection", createArraysIngredient(allFilteredRecipes))
   displayMenuElement("appliances_select","a-selection", createArraysAppliances(allFilteredRecipes))
   displayMenuElement("ustensils_select","u-selection", createArraysUstensils(allFilteredRecipes))
+  listenToComponents()
 }
 
 /** Moves the specified element to the top of the element list .
@@ -38,12 +38,13 @@ export function updateMenuDisplay(allFilteredRecipes) {
  * @param {HTMLElement} ulElement - The UL element from the element.
  */
 export function moveElementToTop(elementIndex, ulElement) {
-  const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`);
+  const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`)
+
   if (elementToMove && ulElement) {
     elementToMove.classList.add('bg-amber-300')
     elementToMove.classList.add('hover:bg-amber-500')
     elementToMove.classList.add('selected')
-    const iconElement = elementToMove.querySelector('.fa-circle-xmark');
+    const iconElement = elementToMove.querySelector('.fa-circle-xmark')
     iconElement.classList.toggle("invisible")
     ulElement.prepend(elementToMove)
   }
@@ -79,7 +80,7 @@ export function moveElementToOriginalPosition(elementIndex, ulElement) {
  */
 export function removeChosenElement(elementOrValue) {
   if (elementOrValue) {
-    const divLocalisations = document.querySelectorAll(".chosen_element");
+    const divLocalisations = document.querySelectorAll(".chosen_element")
 
     // Si elementOrValue est un élément, supprimez cet élément directement
     if (elementOrValue instanceof Element) {
@@ -90,7 +91,7 @@ export function removeChosenElement(elementOrValue) {
         if (element.dataset.value === elementOrValue) {
           element.remove()
         }
-      });
+      })
     }
   }
 }
@@ -110,4 +111,49 @@ export function displayChosenElement(domDisplay, elementName, originalUl, origin
    </div>`
 
   divLocalisation.innerHTML += newElement
+}
+
+export function getUlElement(componentType) {
+  if (componentType === 'ingredients') {
+    return document.querySelector("#i-selection")
+  } else if (componentType === 'appliances') {
+    return document.querySelector("#a-selection")
+  } else if (componentType === 'ustensils') {
+    return document.querySelector("#u-selection")
+  }
+}
+
+/*export function getElementType(elementUlID) {
+  if (elementUlID === 'i-selection') {
+    return ("ingredients")
+  } else if (elementUlID === 'a-selection') {
+    return ("appliances")
+  } else if (elementUlID === 'u-selection') {
+    return ("ustensils")
+  }
+}*/
+
+export function getElementType(elementUlID) {
+  const typeMapping = {
+    'i-selection': 'ingredients',
+    'a-selection': 'appliances',
+    'u-selection': 'ustensils'
+  };
+
+  // Utilisez elementUlID directement comme clé dans le mapping
+  return typeMapping[elementUlID] || null;
+}
+
+export function moveSelectedComponentToTop(activeFilters) {
+  ['ustensils', 'appliances', 'ingredients'].forEach((filterType) => {
+    const selectedFilters = activeFilters[filterType]
+    if (selectedFilters.length > 0) {
+      selectedFilters.forEach((selectedFilter) => {
+        const ulElement = getUlElement(filterType)
+        const element = ulElement.querySelector(`[data-value="${selectedFilter}"]`)
+        const dataIndex = element.parentNode.getAttribute('data-index')
+        moveElementToTop(dataIndex, ulElement)
+      })
+    }
+  })
 }

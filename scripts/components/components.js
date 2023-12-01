@@ -20,4 +20,6 @@ export function closeMenuButton(findedButton) {
   toggleComponents(nextElement)
   RotateChevron(findedButton)
   toggleRoundedCorner(findedButton)
-} 
+}
+
+
