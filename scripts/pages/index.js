@@ -267,20 +267,14 @@ export function listenToComponents() {
 /** Adds an event listener to button from choiced filter container to remove the button when clicked.
  * Moves the removed element back to its original position, reverts recipes, and updates the menu.
  */
-function removeComponent() {
+function listenToRemoveComponent() {
   const divLocalisation = document.querySelector(".choiced_filter")
   divLocalisation.addEventListener("click", (event) => {
     const chosenElement = event.target.closest(".chosen_element")
     const componentValue = chosenElement.getAttribute("data-value")
-    console.log("componentValue",componentValue)
     if (chosenElement) {
       const originalUlId = chosenElement.getAttribute('original-ul')
-      const originalUlValue = document.getElementById(originalUlId)
-      const dataIndexValue = chosenElement.getAttribute('data-index')
       const elementType = getElementType(originalUlId)
-      console.log("originalUlId ", originalUlId)
-      console.log("elementType",elementType)
-      moveElementToOriginalPosition (dataIndexValue,originalUlValue)
       if (elementType === "ingredients") {
         activeFilters.ingredients = activeFilters.ingredients.filter(
           (filter) => filter !== componentValue
@@ -294,9 +288,7 @@ function removeComponent() {
           (filter) => filter !== componentValue
         )
       }
-      console.log("activeFilters",activeFilters)
       const recipeToDisplay = displayRecipes()
-      console.log("recipeToDisplay",recipeToDisplay)
       updateMenuDisplay(recipeToDisplay)
       removeChosenElement(chosenElement)
     }
@@ -356,7 +348,7 @@ createRecipeCards(recipes)
 listenToGlobalInput()
 listenToDropButton() 
 listenToComponents()
-removeComponent() 
 listenToIngredientSearch()
 listenToApplianceSearch()
 listenToUstensilSearch()
+listenToRemoveComponent()

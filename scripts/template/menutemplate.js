@@ -55,7 +55,11 @@ export function moveElementToTop(elementIndex, ulElement) {
  * @param {HTMLElement} ulElement - The unordered list (UL) element.
  */
 export function moveElementToOriginalPosition(elementIndex, ulElement) {
+  console.log("elementIndex vaut",elementIndex)
+  console.log("ulElement vaut",ulElement)
+  console.log("ulElement vaut",ulElement)
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`)
+  console.log("elementToMove vaut",elementToMove)
   const originalIndex = parseInt(elementToMove.getAttribute('data-original-index'))
 
   if (elementToMove && ulElement && !isNaN(originalIndex)) {
