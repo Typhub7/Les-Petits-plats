@@ -2,7 +2,6 @@ import { createArraysAppliances, createArraysIngredient, createArraysUstensils }
 import { displayRecipes, listenToComponents } from "../pages/index.js"
 
 /** Displays menu elements for element, appliance and ustensils selection for filtering recipes.
- *
  * @param {string} ulClass - The class name of the UL element.
  * @param {string} idMenu - The ID of the menu container.
  * @param {Function} elementArrayFunction - The function to generate an array of elements (optional).
@@ -114,6 +113,11 @@ export function displayChosenElement(domDisplay, elementName, originalUl, origin
   divLocalisation.innerHTML += newElement
 }
 
+/** Gets the corresponding unordered list (UL) element based on the specified component type.
+ *
+ * @param {string} componentType - The type of the component ('ingredients', 'appliances', 'ustensils').
+ * @returns {HTMLElement} - The corresponding UL element.
+ */
 export function getUlElement(componentType) {
   if (componentType === 'ingredients') {
     return document.querySelector("#i-selection")
@@ -124,6 +128,11 @@ export function getUlElement(componentType) {
   }
 }
 
+/** Gets the corresponding component type based on the specified UL (unordered list) element ID.
+*
+* @param {string} elementUlID - The ID of the UL element ('i-selection', 'a-selection', 'u-selection').
+* @returns {string|null} - The corresponding component type or null if the UL element ID is not recognized.
+*/
 export function getElementType(elementUlID) {
   const typeMapping = {
     'i-selection': 'ingredients',
@@ -133,6 +142,10 @@ export function getElementType(elementUlID) {
   return typeMapping[elementUlID] || null
 }
 
+/** Moves the selected components to the top of their respective component lists.
+ *
+ * @param {Object} activeFilters - The object containing active filters for each component type.
+ */
 export function moveSelectedComponentToTop(activeFilters) {
   ['ustensils', 'appliances', 'ingredients'].forEach((filterType) => {
     const selectedFilters = activeFilters[filterType]

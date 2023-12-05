@@ -22,7 +22,6 @@ function listenToGlobalInput() {
 }
 
 /** Handles global search for recipes and updates the component choose display.
- *
  * @param {Event} event - The input event from the global input.
  */
 function recipeAndMenuDiplayGlobalSearch(event) {
@@ -34,12 +33,16 @@ function recipeAndMenuDiplayGlobalSearch(event) {
     if (!allFilteredRecipes.length) {
       displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.")
     }
+  } 
+  if (inputValue.length < 3 && allFilteredRecipes!== recipes) {
+    allFilteredRecipes = recipes
+    createRecipeCards(allFilteredRecipes)
+    updateMenuDisplay()  
   }
 }
 
 /** Listens for click events on Menu Dropdown Button for Ingredients, appliances and ustensils
- *
- * @param {Event} event - The click event on the ingredient Menu.
+ * @param {Event} event - The click event on the ingredient/appliance/ustensil Menu.
  */
 function listenToDropButton() {
   const buttons = document.querySelectorAll(".common-btn")
@@ -50,6 +53,10 @@ function listenToDropButton() {
   })
 }
 
+/** Listens for input events on inputs field for Ingredients, appliances and ustensils
+ * @param {string} inputSelector - The CSS selector for the search input field.
+ * @param {function} displayFunction - The function to display results based on the input value.
+ */
 function listenToSearchInput(inputSelector, displayFunction) {
   const searchInput = document.querySelector(inputSelector)
   searchInput.addEventListener("input", (event) => {
@@ -59,6 +66,9 @@ function listenToSearchInput(inputSelector, displayFunction) {
   searchInput.addEventListener("keydown", enterKey)
 }
 
+/** Handles the "Enter keydown" event on a search input field.
+ * @param {Event} event - The keydown event object.
+ */
 function enterKey(event) {
   if (event.keyCode === 13) {
     this.blur()
@@ -66,7 +76,6 @@ function enterKey(event) {
 }
 
 /** Listens for click on ingredient or appliance or ustensil button from the list
- *
  * @param {string} selector - The input seclector of ingredient or appliance or ustensil
  * @param {string} function - The function of choise diplay
  */
@@ -77,33 +86,61 @@ function listenToChoiceButtons(selector, choiceDisplayFunction) {
   });
 }
 
-/****** INGREDIENTS FUNCTION ******/
-
-/** Handles the display of recipe, the moving of ingredient button 
-* and the new button when an ingredient is chosen.
-*
-* @param {Event} event - The click event on an ingredient.
-*/
-function ingredientChosenDisplay(event) {
-  const componentValue = event.currentTarget.getAttribute("data-value")
-  const parentElement = event.currentTarget.parentNode
-  const elementValue = parentElement.getAttribute('data-index')
-  const ulElement = document.querySelector("#i-selection")
-  const ingredientMenuButton = document.querySelector(".ingredient_drop")
-  activeFilters.ingredients.push(componentValue)
+/** Handles the display of selected components, the movement of component buttons, and the creation of new buttons
+ * when a component is chosen (e.g., ingredient, appliance, or utensil).
+ *
+ * @param {Event} event - The click event on a component button.
+ * @param {string} elementType - The type of the chosen component ('ingredients', 'appliances', 'ustensils').
+ * @param {Object} activeFilters - The object containing active filters for each component type.
+ * @param {string} menuButtonClass - The CSS class of the menu button associated with the component type.
+ */
+function chosenDisplay(event, elementType, activeFilters, menuButtonClass) {
+  const componentValue = event.currentTarget.getAttribute("data-value");
+  const parentElement = event.currentTarget.parentNode;
+  const elementValue = parentElement.getAttribute('data-index');
+  const ulElement = document.querySelector(`#${elementType[0]}-selection`);
+  const menuButton = document.querySelector(`.${menuButtonClass}`);
+  activeFilters[elementType].push(componentValue);
 
   if (!parentElement.classList.contains('selected')) {
-    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
-    updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters)
-    closeMenuButton(ingredientMenuButton)
+    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue);
+    updateMenuDisplay();
+    moveSelectedComponentToTop(activeFilters);
+    closeMenuButton(menuButton);
   } else {
-    moveElementToOriginalPosition(elementValue, ulElement)
-    activeFilters.ingredients = activeFilters.ingredients.filter((filter) => filter !== componentValue)
-    updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters)
-    removeChosenElement(componentValue)
+    moveElementToOriginalPosition(elementValue, ulElement);
+    activeFilters[elementType] = activeFilters[elementType].filter((filter) => filter !== componentValue);
+    updateMenuDisplay();
+    moveSelectedComponentToTop(activeFilters);
+    removeChosenElement(componentValue);
   }
+}
+/** Handles the display of selected ingredients, the movement of ingredient buttons,
+ * and the creation of new buttons when an ingredient is chosen.
+ *
+ * @param {Event} event - The click event on an ingredient button.
+ */
+function ingredientChosenDisplay(event) {
+  chosenDisplay(event, 'ingredients', activeFilters, 'ingredient_drop');
+}
+
+/** Handles the display of selected appliances, the movement of appliance buttons,
+ * and the creation of new buttons when an appliance is chosen.
+ *
+ * @param {Event} event - The click event on an appliance button.
+ */
+function applianceChosenDisplay(event) {
+  chosenDisplay(event, 'appliances', activeFilters, 'appliances_drop');
+}
+
+/** Handles the display of selected ustensils, the movement of ustensil buttons,
+ * and the creation of new buttons when an ustensil is chosen.
+ *
+ * @param {Event} event - The click event on an ustensil button.
+ */
+
+function ustensilChosenDisplay(event) {
+  chosenDisplay(event, 'ustensils', activeFilters, 'ustensils_drop');
 }
 
 /** * Displays menu elements with ingredients filtered by the input value,
@@ -118,44 +155,6 @@ function displayIngredientsFilteredByInput(inputValueIngredient, recipesData) {
   listenToChoiceButtons("i-selection", ingredientChosenDisplay)
 }
 
-/** Displays menu elements for appliances and utensils based on recipes filtered by the chosen ingredient.
- * Listens to component events, updates the list of filtered recipes, and displays the filtered results.
- */
-export function displayRecipes() {
-  const recipeToDisplay = applyAllFilters()
-  filterAndDisplayResults(recipeToDisplay)
-  return recipeToDisplay
-}
-
-/****** APPLIANCE FUNCTION ******/
-
-/** Handles the display of recipe, the moving of appliance button 
- * and the new button when an appliance is chosen.
- *
- * @param {Event} event - The click event on an appliance.
-**/
-function applianceChosenDisplay(event) {
-  const componentValue = event.currentTarget.getAttribute("data-value")
-  const parentElement = event.currentTarget.parentNode
-  const elementValue = parentElement.getAttribute('data-index')
-  const ulElement = document.querySelector("#a-selection")
-  const applianceMenuButton = document.querySelector(".appliances_drop")
-  activeFilters.appliances.push(componentValue)
-
-  if (!parentElement.classList.contains('selected')) {
-    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
-    updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters)
-    closeMenuButton(applianceMenuButton)
-  } else {
-    moveElementToOriginalPosition(elementValue, ulElement)
-    activeFilters.appliances = activeFilters.appliances.filter((filter) => filter !== componentValue)
-    updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters)
-    removeChosenElement(componentValue)
-  }
-}
-
 /** * Displays menu elements with appliances filtered by the input value,
  * and sets up new event listeners for the new list of appliance.
  *
@@ -168,35 +167,6 @@ function displayApliancesFilteredByInput(inputValueAppliance, recipesData) {
   listenToChoiceButtons("a-selection", applianceChosenDisplay);
 }
 
-/****** USTENSILS FUNCTION ******/
-
-
-/** Handles the display of recipe, the moving of ustensil button 
-* and the new button when an ustensil is chosen.
-*
-* @param {Event} event - The click event on an ustensil.
-*/
-function ustensilChosenDisplay(event) {
-  const componentValue = event.currentTarget.getAttribute("data-value")
-  const parentElement = event.currentTarget.parentNode
-  const elementValue = parentElement.getAttribute('data-index')
-  const ulElement = document.querySelector("#u-selection")
-  const ustensilMenuButton = document.querySelector(".ustensils_drop")
-  activeFilters.ustensils.push(componentValue)
-  
-  if (!parentElement.classList.contains('selected')) {
-    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
-    updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters) 
-    closeMenuButton(ustensilMenuButton)
-  } else {
-    moveElementToOriginalPosition(elementValue, ulElement)
-    activeFilters.ustensils = activeFilters.ustensils.filter((filter) => filter !== componentValue)
-    updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters)
-    removeChosenElement(componentValue)
-  }
-}
 /** * Displays menu elements with ustensils filtered by the input value,
  * and sets up new event listeners for the new list of ustensil.
  *
@@ -209,8 +179,18 @@ function displayUstensilsFilteredByInput(inputValueUstensil, recipesData) {
   listenToChoiceButtons("u-selection", ustensilChosenDisplay)
 }
 
+/** Displays menu elements for appliances and utensils based on recipes filtered by the chosen ingredient.
+ * Listens to component events, updates the list of filtered recipes, and displays the filtered results.
+ */
+export function displayRecipes() {
+  const recipeToDisplay = applyAllFilters()
+  filterAndDisplayResults(recipeToDisplay)
+  return recipeToDisplay
+}
+
+
+
 /** Sets up event listeners for ingredients, appliances, and utensils buttons.
- * 
  */
 export function listenToComponents() {
   listenToChoiceButtons("i-selection", ingredientChosenDisplay)
@@ -248,6 +228,9 @@ function listenToRemoveComponent() {
   })
 }
 
+/** Applies all active filters to the current set of filtered recipes.
+ * @returns {Array} - The array of recipes after applying all active filters.
+ */
 function applyAllFilters() {
   let filteredRecipes = allFilteredRecipes
 
@@ -273,7 +256,6 @@ function applyAllFilters() {
 }
 
 /** Filters recipes and updates the display by creating recipe cards for the provided recipe array.
- *
  * @param {Array} recipeToDisplay - The array of recipes to filter and display.
  */
 function filterAndDisplayResults(recipeToDisplay) {
@@ -282,7 +264,6 @@ function filterAndDisplayResults(recipeToDisplay) {
 }
 
 /** Displays an error message on the recipe gallery when no recipe found with global filter.
- *
  * @param {string} message - The error message to be displayed.
  */
 function displayErrorMessage(message) {
