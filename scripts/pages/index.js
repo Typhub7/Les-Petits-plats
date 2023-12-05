@@ -29,7 +29,7 @@ function recipeAndMenuDiplayGlobalSearch(event) {
   if (inputValue.length >= 3) {
     allFilteredRecipes = globalFilterAll(inputValue)
     createRecipeCards(allFilteredRecipes)
-    updateMenuDisplay(allFilteredRecipes)
+    updateMenuDisplay()
     if (!allFilteredRecipes.length) {
       displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.")
     }
@@ -49,30 +49,28 @@ function listenToDropButton() {
   })
 }
 
-/****** INGREDIENTS FUNCTION ******/
 
-/** Listens for input events on the search Input of ingredient
- *
- * @param {Event} event - The input event in the ingredient search input.
- */
-function listenToIngredientSearch() {
-  const inputIngredient = document.querySelector("#ingredientsSearchInput")
-  inputIngredient.addEventListener("input", (event) => {
-    const inputValueIngredient = event.target.value
-    displayIngredientsFilteredByInput(inputValueIngredient, allFilteredRecipes)
-  })
+function listenToSearchInput(inputSelector, displayFunction) {
+  const searchInput = document.querySelector(inputSelector);
+  searchInput.addEventListener("input", (event) => {
+    const inputValue = event.target.value;
+    displayFunction(inputValue, allFilteredRecipes);
+  });
 }
 
-/** Listens for click on any ingredient from the list
+/** Listens for click on ingredient or appliance or ustensil button from the list
  *
- * @param {Event} event - The input event on an ingredient.
+ * @param {string} selector - The input seclector of ingredient or appliance or ustensil
+ * @param {string} function - The function of choise diplay
  */
-function listenToIngredientChoiceButtons() {
-  const optionsButtons = document.querySelectorAll("#i-selection .option")
+function listenToChoiceButtons(selector, choiceDisplayFunction) {
+  const optionsButtons = document.querySelectorAll(`#${selector} .option`);
   optionsButtons.forEach((button) => {
-    button.addEventListener("click", ingredientChosenDisplay)
-  })
+    button.addEventListener("click", choiceDisplayFunction);
+  });
 }
+
+/****** INGREDIENTS FUNCTION ******/
 
 /** Handles the display of recipe, the moving of ingredient button 
 * and the new button when an ingredient is chosen.
@@ -89,15 +87,13 @@ function ingredientChosenDisplay(event) {
   
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
-    const recipeToDisplay = displayRecipes()
-    updateMenuDisplay(recipeToDisplay)
+    updateMenuDisplay()
     moveSelectedComponentToTop(activeFilters) 
     closeMenuButton(ingredientMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
     activeFilters.ingredients = activeFilters.ingredients.filter((filter) => filter !== componentValue)
-    const recipeToDisplay = displayRecipes()
-    updateMenuDisplay(recipeToDisplay)
+    updateMenuDisplay()
     moveSelectedComponentToTop(activeFilters)
     removeChosenElement(componentValue)
   }
@@ -112,42 +108,19 @@ function ingredientChosenDisplay(event) {
 function displayIngredientsFilteredByInput(inputValueIngredient, recipesData) {
   const uniqueIngredients = ingredientsFilterByDropdown(recipesData, inputValueIngredient)
   displayMenuElement("ingredient_select", "i-selection", null, uniqueIngredients)
-  listenToIngredientChoiceButtons()
+  listenToChoiceButtons("i-selection", ingredientChosenDisplay)
 }
 
 /** Displays menu elements for appliances and utensils based on recipes filtered by the chosen ingredient.
  * Listens to component events, updates the list of filtered recipes, and displays the filtered results.
  */
-function displayRecipes() {
+export function displayRecipes() {
   const recipeToDisplay = applyAllFilters()
   filterAndDisplayResults(recipeToDisplay)
   return recipeToDisplay
 }
 
 /****** APPLIANCE FUNCTION ******/
-
-/** Listens for input events on the search Input of appliance
- *
- * @param {Event} event - The input event in the appliance search input.
- */
-function listenToApplianceSearch() {
-  const inputAppliance = document.querySelector("#appliancesSearchInput")
-  inputAppliance.addEventListener("input", (event) => {
-    const inputValueAppliance = event.target.value
-    displayApliancesFilteredByInput(inputValueAppliance, allFilteredRecipes)
-  })
-}
-
-/** Listens for click on any appliance from the list
- *
- * @param {Event} event - The input event on an appliance.
- */
-function listenToApplianceChoiceButtons() {
-  const optionsButtons = document.querySelectorAll("#a-selection .option")
-  optionsButtons.forEach((button) => {
-    button.addEventListener("click", applianceChosenDisplay)
-  })
-}
 
 /** Handles the display of recipe, the moving of appliance button 
  * and the new button when an appliance is chosen.
@@ -164,15 +137,13 @@ function applianceChosenDisplay(event) {
 
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
-    const recipeToDisplay = displayRecipes()
-    updateMenuDisplay(recipeToDisplay)
+    updateMenuDisplay()
     moveSelectedComponentToTop(activeFilters)
     closeMenuButton(applianceMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
     activeFilters.appliances = activeFilters.appliances.filter((filter) => filter !== componentValue)
-    const recipeToDisplay = displayRecipes()
-    updateMenuDisplay(recipeToDisplay)
+    updateMenuDisplay()
     moveSelectedComponentToTop(activeFilters)
     removeChosenElement(componentValue)
   }
@@ -187,33 +158,11 @@ function applianceChosenDisplay(event) {
 function displayApliancesFilteredByInput(inputValueAppliance, recipesData) {
   const uniqueAppliances  = appliancesFilterByDropdown(recipesData, inputValueAppliance)
   displayMenuElement("appliances_select", "a-selection", null, uniqueAppliances)
-  listenToApplianceChoiceButtons()
+  listenToChoiceButtons("a-selection", applianceChosenDisplay);
 }
 
 /****** USTENSILS FUNCTION ******/
 
-/** Listens for input events on the search Input of ustensil
- *
- * @param {Event} event - The input event in the ustensil search input.
- */
-function listenToUstensilSearch() {
-  const inputUstensil = document.querySelector("#ustensilsSearchInput")
-  inputUstensil.addEventListener("input", (event) => {
-    const inputValueUstensil = event.target.value
-    displayUstensilsFilteredByInput(inputValueUstensil, allFilteredRecipes)
-  })
-}
-
-/** Listens for click on any ustensil from the list
- *
- * @param {Event} event - The input event on an ustensil.
- */
-function listenToUstensilChoiceButtons() {
-  const optionsButtons = document.querySelectorAll("#u-selection .option")
-  optionsButtons.forEach((button) => {
-    button.addEventListener("click", ustensilChosenDisplay)
-  })
-}
 
 /** Handles the display of recipe, the moving of ustensil button 
 * and the new button when an ustensil is chosen.
@@ -230,15 +179,13 @@ function ustensilChosenDisplay(event) {
   
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
-    const recipeToDisplay = displayRecipes()
-    updateMenuDisplay(recipeToDisplay)
+    updateMenuDisplay()
     moveSelectedComponentToTop(activeFilters) 
     closeMenuButton(ustensilMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
     activeFilters.ustensils = activeFilters.ustensils.filter((filter) => filter !== componentValue)
-    const recipeToDisplay = displayRecipes()
-    updateMenuDisplay(recipeToDisplay)
+    updateMenuDisplay()
     moveSelectedComponentToTop(activeFilters)
     removeChosenElement(componentValue)
   }
@@ -252,16 +199,16 @@ function ustensilChosenDisplay(event) {
 function displayUstensilsFilteredByInput(inputValueUstensil, recipesData) {
   const uniqueUstensils = ustensilsFilterByDropdown(recipesData, inputValueUstensil)
   displayMenuElement("ustensils_select", "u-selection", null, uniqueUstensils)
-  listenToUstensilChoiceButtons()
+  listenToChoiceButtons("u-selection", ustensilChosenDisplay)
 }
 
 /** Sets up event listeners for ingredients, appliances, and utensils buttons.
  * 
  */
 export function listenToComponents() {
-  listenToIngredientChoiceButtons()
-  listenToApplianceChoiceButtons()
-  listenToUstensilChoiceButtons()
+  listenToChoiceButtons("i-selection", ingredientChosenDisplay)
+  listenToChoiceButtons("a-selection", applianceChosenDisplay)
+  listenToChoiceButtons("u-selection", ustensilChosenDisplay)
 }
 
 /** Adds an event listener to button from choiced filter container to remove the button when clicked.
@@ -288,8 +235,7 @@ function listenToRemoveComponent() {
           (filter) => filter !== componentValue
         )
       }
-      const recipeToDisplay = displayRecipes()
-      updateMenuDisplay(recipeToDisplay)
+      updateMenuDisplay()
       removeChosenElement(chosenElement)
     }
   })
@@ -348,7 +294,7 @@ createRecipeCards(recipes)
 listenToGlobalInput()
 listenToDropButton() 
 listenToComponents()
-listenToIngredientSearch()
-listenToApplianceSearch()
-listenToUstensilSearch()
+listenToSearchInput("#appliancesSearchInput", displayApliancesFilteredByInput);
+listenToSearchInput("#ustensilsSearchInput", displayUstensilsFilteredByInput);
+listenToSearchInput("#ingredientsSearchInput", displayIngredientsFilteredByInput);
 listenToRemoveComponent()

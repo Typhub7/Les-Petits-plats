@@ -1,5 +1,5 @@
 import { createArraysAppliances, createArraysIngredient, createArraysUstensils } from "../api/recipesdata.js"
-import { listenToComponents } from "../pages/index.js"
+import { displayRecipes, listenToComponents } from "../pages/index.js"
 
 /** Displays menu elements for element, appliance and ustensils selection for filtering recipes.
  *
@@ -26,10 +26,11 @@ export function displayMenuElement(ulClass,idMenu, elementArrayFunction,filtered
  *
  * @param {Array} allFilteredRecipes - The array of recipes used to update the menu display.
  */
-export function updateMenuDisplay(allFilteredRecipes) {
-  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(allFilteredRecipes))
-  displayMenuElement("appliances_select","a-selection", createArraysAppliances(allFilteredRecipes))
-  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(allFilteredRecipes))
+export function updateMenuDisplay() {
+  const recipeToDisplay = displayRecipes()
+  displayMenuElement("ingredient_select","i-selection", createArraysIngredient(recipeToDisplay))
+  displayMenuElement("appliances_select","a-selection", createArraysAppliances(recipeToDisplay))
+  displayMenuElement("ustensils_select","u-selection", createArraysUstensils(recipeToDisplay))
   listenToComponents()
 }
 
@@ -55,11 +56,7 @@ export function moveElementToTop(elementIndex, ulElement) {
  * @param {HTMLElement} ulElement - The unordered list (UL) element.
  */
 export function moveElementToOriginalPosition(elementIndex, ulElement) {
-  console.log("elementIndex vaut",elementIndex)
-  console.log("ulElement vaut",ulElement)
-  console.log("ulElement vaut",ulElement)
   const elementToMove = ulElement.querySelector(`[data-index="${elementIndex}"]`)
-  console.log("elementToMove vaut",elementToMove)
   const originalIndex = parseInt(elementToMove.getAttribute('data-original-index'))
 
   if (elementToMove && ulElement && !isNaN(originalIndex)) {
@@ -127,25 +124,13 @@ export function getUlElement(componentType) {
   }
 }
 
-/*export function getElementType(elementUlID) {
-  if (elementUlID === 'i-selection') {
-    return ("ingredients")
-  } else if (elementUlID === 'a-selection') {
-    return ("appliances")
-  } else if (elementUlID === 'u-selection') {
-    return ("ustensils")
-  }
-}*/
-
 export function getElementType(elementUlID) {
   const typeMapping = {
     'i-selection': 'ingredients',
     'a-selection': 'appliances',
     'u-selection': 'ustensils'
-  };
-
-  // Utilisez elementUlID directement comme clé dans le mapping
-  return typeMapping[elementUlID] || null;
+  }
+  return typeMapping[elementUlID] || null
 }
 
 export function moveSelectedComponentToTop(activeFilters) {
