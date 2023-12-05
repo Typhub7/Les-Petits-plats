@@ -18,6 +18,7 @@ let activeFilters = {
 function listenToGlobalInput() {
   const inputElement = document.querySelector("#globalSearchInput")
   inputElement.addEventListener("input", recipeAndMenuDiplayGlobalSearch)
+  inputElement.addEventListener("keydown", enterKey)
 }
 
 /** Handles global search for recipes and updates the component choose display.
@@ -49,13 +50,19 @@ function listenToDropButton() {
   })
 }
 
-
 function listenToSearchInput(inputSelector, displayFunction) {
-  const searchInput = document.querySelector(inputSelector);
+  const searchInput = document.querySelector(inputSelector)
   searchInput.addEventListener("input", (event) => {
-    const inputValue = event.target.value;
-    displayFunction(inputValue, allFilteredRecipes);
-  });
+    const inputValue = event.target.value
+    displayFunction(inputValue, allFilteredRecipes)
+  })
+  searchInput.addEventListener("keydown", enterKey)
+}
+
+function enterKey(event) {
+  if (event.keyCode === 13) {
+    this.blur()
+  }
 }
 
 /** Listens for click on ingredient or appliance or ustensil button from the list
@@ -84,11 +91,11 @@ function ingredientChosenDisplay(event) {
   const ulElement = document.querySelector("#i-selection")
   const ingredientMenuButton = document.querySelector(".ingredient_drop")
   activeFilters.ingredients.push(componentValue)
-  
+
   if (!parentElement.classList.contains('selected')) {
     displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
     updateMenuDisplay()
-    moveSelectedComponentToTop(activeFilters) 
+    moveSelectedComponentToTop(activeFilters)
     closeMenuButton(ingredientMenuButton)
   } else {
     moveElementToOriginalPosition(elementValue, ulElement)
