@@ -14,7 +14,7 @@ function recipeTemplate(recipe) {
     `
     <article class="recipeCard relative w-[380px] h-[731px] mb-5 bg-white rounded-3xl shadow">
         <figure> 
-            <img class="w-[380px] h-[253px] rounded-t-3xl object-cover" src="../../assets/Recettes/${recipe.image}" alt="${recipe.name}">
+            <img class="w-[380px] h-[253px] rounded-t-3xl object-cover" src="assets/Recettes/${recipe.image}" alt="${recipe.name}">
             <span class="timer absolute top-[20px] right-[22px] px-4 py-1.5 bg-amber-300 text-xs rounded-[14px] justify-center items-center gap-2.5 inline-flex"">${recipe.time}min</span>
             <figcaption class="recette pt-8 px-6 pb-16 flex flex-col gap-6">
                 <h3 class=" text-black text-lg font-normal font-['Anton']">${recipe.name}</h3>

@@ -1159,7 +1159,7 @@ video {
 }
 
 .bg-background-plate {
-  background-image: url('/assets/header_background.jpg');
+  background-image: url('assets/header_background.jpg');
 }
 
 .bg-cover {
