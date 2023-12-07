@@ -74,16 +74,19 @@ function enterKey(event) {
     this.blur()
   }
 }
-
+/** Listens for click on ingredient or appliance or ustensil button from the list
+ * @param {string} selector - The input seclector of ingredient or appliance or ustensil
+ * @param {string} function - The function of choise diplay
+ 
 /** Listens for click on ingredient or appliance or ustensil button from the list
  * @param {string} selector - The input seclector of ingredient or appliance or ustensil
  * @param {string} function - The function of choise diplay
  */
 function listenToChoiceButtons(selector, choiceDisplayFunction) {
-  const optionsButtons = document.querySelectorAll(`#${selector} .option`);
+  const optionsButtons = document.querySelectorAll(`#${selector} .option`)
   optionsButtons.forEach((button) => {
-    button.addEventListener("click", choiceDisplayFunction);
-  });
+    button.addEventListener("click", choiceDisplayFunction)
+  })
 }
 
 /** Handles the display of selected components, the movement of component buttons, and the creation of new buttons
@@ -95,24 +98,24 @@ function listenToChoiceButtons(selector, choiceDisplayFunction) {
  * @param {string} menuButtonClass - The CSS class of the menu button associated with the component type.
  */
 function chosenDisplay(event, elementType, activeFilters, menuButtonClass) {
-  const componentValue = event.currentTarget.getAttribute("data-value");
-  const parentElement = event.currentTarget.parentNode;
-  const elementValue = parentElement.getAttribute('data-index');
-  const ulElement = document.querySelector(`#${elementType[0]}-selection`);
-  const menuButton = document.querySelector(`.${menuButtonClass}`);
-  activeFilters[elementType].push(componentValue);
+  const componentValue = event.currentTarget.getAttribute("data-value")
+  const parentElement = event.currentTarget.parentNode
+  const elementValue = parentElement.getAttribute('data-index')
+  const ulElement = document.querySelector(`#${elementType[0]}-selection`)
+  const menuButton = document.querySelector(`.${menuButtonClass}`)
+  activeFilters[elementType].push(componentValue)
 
   if (!parentElement.classList.contains('selected')) {
-    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue);
-    updateMenuDisplay();
-    moveSelectedComponentToTop(activeFilters);
-    closeMenuButton(menuButton);
+    displayChosenElement("choiced_filter", componentValue, ulElement.id, elementValue)
+    updateMenuDisplay()
+    moveSelectedComponentToTop(activeFilters)
+    closeMenuButton(menuButton)
   } else {
-    moveElementToOriginalPosition(elementValue, ulElement);
-    activeFilters[elementType] = activeFilters[elementType].filter((filter) => filter !== componentValue);
-    updateMenuDisplay();
-    moveSelectedComponentToTop(activeFilters);
-    removeChosenElement(componentValue);
+    moveElementToOriginalPosition(elementValue, ulElement)
+    activeFilters[elementType] = activeFilters[elementType].filter((filter) => filter !== componentValue)
+    updateMenuDisplay()
+    moveSelectedComponentToTop(activeFilters)
+    removeChosenElement(componentValue)
   }
 }
 /** Handles the display of selected ingredients, the movement of ingredient buttons,
@@ -121,7 +124,7 @@ function chosenDisplay(event, elementType, activeFilters, menuButtonClass) {
  * @param {Event} event - The click event on an ingredient button.
  */
 function ingredientChosenDisplay(event) {
-  chosenDisplay(event, 'ingredients', activeFilters, 'ingredient_drop');
+  chosenDisplay(event, 'ingredients', activeFilters, 'ingredient_drop')
 }
 
 /** Handles the display of selected appliances, the movement of appliance buttons,
@@ -130,7 +133,7 @@ function ingredientChosenDisplay(event) {
  * @param {Event} event - The click event on an appliance button.
  */
 function applianceChosenDisplay(event) {
-  chosenDisplay(event, 'appliances', activeFilters, 'appliances_drop');
+  chosenDisplay(event, 'appliances', activeFilters, 'appliances_drop')
 }
 
 /** Handles the display of selected ustensils, the movement of ustensil buttons,
@@ -140,7 +143,7 @@ function applianceChosenDisplay(event) {
  */
 
 function ustensilChosenDisplay(event) {
-  chosenDisplay(event, 'ustensils', activeFilters, 'ustensils_drop');
+  chosenDisplay(event, 'ustensils', activeFilters, 'ustensils_drop')
 }
 
 /** * Displays menu elements with ingredients filtered by the input value,
@@ -164,7 +167,7 @@ function displayIngredientsFilteredByInput(inputValueIngredient, recipesData) {
 function displayApliancesFilteredByInput(inputValueAppliance, recipesData) {
   const uniqueAppliances  = appliancesFilterByDropdown(recipesData, inputValueAppliance)
   displayMenuElement("appliances_select", "a-selection", null, uniqueAppliances)
-  listenToChoiceButtons("a-selection", applianceChosenDisplay);
+  listenToChoiceButtons("a-selection", applianceChosenDisplay)
 }
 
 /** * Displays menu elements with ustensils filtered by the input value,
@@ -282,7 +285,7 @@ createRecipeCards(recipes)
 listenToGlobalInput()
 listenToDropButton() 
 listenToComponents()
-listenToSearchInput("#appliancesSearchInput", displayApliancesFilteredByInput);
-listenToSearchInput("#ustensilsSearchInput", displayUstensilsFilteredByInput);
-listenToSearchInput("#ingredientsSearchInput", displayIngredientsFilteredByInput);
+listenToSearchInput("#appliancesSearchInput", displayApliancesFilteredByInput)
+listenToSearchInput("#ustensilsSearchInput", displayUstensilsFilteredByInput)
+listenToSearchInput("#ingredientsSearchInput", displayIngredientsFilteredByInput)
 listenToRemoveComponent()
