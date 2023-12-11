@@ -87,7 +87,18 @@ function listenToChoiceButtons(selector, choiceDisplayFunction) {
   optionsButtons.forEach((button) => {
     button.addEventListener("click", choiceDisplayFunction)
   })
+
+  const iconsFontAwesome = document.querySelectorAll(`#${selector} .fa-circle-xmark`)
+  iconsFontAwesome.forEach((icon) => {
+    icon.addEventListener("click", function(event) {
+      event.stopPropagation()
+      const liParent = icon.closest('li')
+      const button = liParent.querySelector('.option')
+      button.click()
+    })
+  })
 }
+
 
 /** Handles the display of selected components, the movement of component buttons, and the creation of new buttons
  * when a component is chosen (e.g., ingredient, appliance, or utensil).
