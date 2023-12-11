@@ -131,15 +131,17 @@ export function getUlElement(componentType) {
 /** Gets the corresponding component type based on the specified UL (unordered list) element ID.
 *
 * @param {string} elementUlID - The ID of the UL element ('i-selection', 'a-selection', 'u-selection').
-* @returns {string|null} - The corresponding component type or null if the UL element ID is not recognized.
+* @returns {string} - The corresponding component type or null if the UL element ID is not recognized.
 */
 export function getElementType(elementUlID) {
-  const typeMapping = {
-    'i-selection': 'ingredients',
-    'a-selection': 'appliances',
-    'u-selection': 'ustensils'
+  switch(elementUlID) {
+    case 'i-selection':
+      return 'ingredients'
+    case 'a-selection' :
+      return 'appliances'
+    case 'u-selection' :
+      return 'ustensils'
   }
-  return typeMapping[elementUlID] || null
 }
 
 /** Moves the selected components to the top of their respective component lists.

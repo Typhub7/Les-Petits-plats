@@ -57,7 +57,7 @@ function listenToDropButton() {
  * @param {string} inputSelector - The CSS selector for the search input field.
  * @param {function} displayFunction - The function to display results based on the input value.
  */
-function listenToSearchInput(inputSelector, displayFunction) {
+const listenToSearchInput = (inputSelector, displayFunction) => {
   const searchInput = document.querySelector(inputSelector)
   searchInput.addEventListener("input", (event) => {
     const inputValue = event.target.value
