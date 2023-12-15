@@ -1,4 +1,4 @@
-import { cleanComponent } from "../api/recipesdata.js";
+import { cleanComponent } from "../api/recipesdata.js"
 
 /** Filters and extracts unique ingredients from recipes based on a dropdown selection.
  *
@@ -8,12 +8,18 @@ import { cleanComponent } from "../api/recipesdata.js";
  */
 export const ingredientsFilterByDropdown = (recipesGlobalFilteredOrNot, ingredientsSearchInput) => {
     const filteredRecipesbyIngredient = dropdownFilterIngredients(recipesGlobalFilteredOrNot, ingredientsSearchInput)
-    const filteredIngredients = filteredRecipesbyIngredient
-        .flatMap((recipe) => recipe.ingredients)
-        .filter((ingredient) =>
-        ingredient.ingredient.toLowerCase().includes(ingredientsSearchInput.toLowerCase()))
-        .map((ingredient) => ingredient.ingredient)
-    const uniqueIngredients = cleanComponent(filteredIngredients);
+    const filteredIngredients = []
+
+    for (const recipe of filteredRecipesbyIngredient) {
+        for (const ingredient of recipe.ingredients) {
+            const lowerCasedIngredient = ingredient.ingredient.toLowerCase()
+            if (lowerCasedIngredient.includes(ingredientsSearchInput.toLowerCase())) {
+                filteredIngredients.push(lowerCasedIngredient)
+            }
+        }
+    }
+
+    const uniqueIngredients = cleanComponent(filteredIngredients)
     return uniqueIngredients
 }
 
@@ -23,10 +29,20 @@ export const ingredientsFilterByDropdown = (recipesGlobalFilteredOrNot, ingredie
  * @param {string} ingredientsSearchInput - The input value for ingredient filtering.
  * @returns {Array} - An array of recipes containing ingredients matching the search input.
  */
-export const dropdownFilterIngredients = (recipesGlobalFilteredOrNot,ingredientsSearchInput) =>
-    recipesGlobalFilteredOrNot.filter((recipe) =>
-    recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(ingredientsSearchInput.toLowerCase()))
-    )
+export const dropdownFilterIngredients = (recipesGlobalFilteredOrNot, ingredientsSearchInput) => {
+    const filteredRecipes = []
+
+    for (const recipe of recipesGlobalFilteredOrNot) {
+        for (const ingredient of recipe.ingredients) {
+            const lowerCasedIngredient = ingredient.ingredient.toLowerCase()
+            if (lowerCasedIngredient.includes(ingredientsSearchInput.toLowerCase())) {
+                filteredRecipes.push(recipe)
+            }
+        }
+    }
+
+    return filteredRecipes
+}
 
 /** Filters and extracts unique appliances from recipes based on a dropdown selection.
  *
@@ -35,15 +51,17 @@ export const dropdownFilterIngredients = (recipesGlobalFilteredOrNot,ingredients
  * @returns {Array} - An array of unique appliances based on the search input.
  */
 export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliancesSearchInput) => {
-    const filteredRecipesbyAppliance = dropdownFilterAppliances(recipesGlobalFilteredOrNot, appliancesSearchInput);
-    const filteredAppliances = filteredRecipesbyAppliance
-        .map((recipe) => recipe.appliance)
-        .filter((appliance) =>
-            appliance.toLowerCase().includes(appliancesSearchInput.toLowerCase())
-        )
-        .map((appliance) => appliance);
+    const filteredRecipesbyAppliance = dropdownFilterAppliances(recipesGlobalFilteredOrNot, appliancesSearchInput)
+    const filteredAppliances = []
 
-    const uniqueAppliances = cleanComponent(filteredAppliances);
+    for (const recipe of filteredRecipesbyAppliance) {
+        const lowerCasedAppliance = recipe.appliance.toLowerCase()
+        if (lowerCasedAppliance.includes(appliancesSearchInput.toLowerCase())) {
+            filteredAppliances.push(recipe.appliance)
+        }
+    }
+
+    const uniqueAppliances = cleanComponent(filteredAppliances)
     return uniqueAppliances
 }
 
@@ -53,10 +71,18 @@ export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliance
  * @param {string} appliancesSearchInput - The input value for appliance filtering.
  * @returns {Array} - An array of recipes containing appliances matching the search input.
  */
-export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesSearchInput) =>
-    recipesGlobalFilteredOrNot.filter((recipe) =>
-        recipe.appliance.toLowerCase().includes(appliancesSearchInput.toLowerCase())
-    )
+export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesSearchInput) => {
+    const filteredRecipes = []
+
+    for (const recipe of recipesGlobalFilteredOrNot) {
+        const lowerCasedAppliance = recipe.appliance.toLowerCase()
+        if (lowerCasedAppliance.includes(appliancesSearchInput.toLowerCase())) {
+            filteredRecipes.push(recipe)
+        }
+    }
+
+    return filteredRecipes
+}
 
 /** Filters and extracts unique utensils from recipes based on a dropdown selection.
  *
@@ -66,12 +92,18 @@ export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesS
  */
 export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
     const filteredRecipesbyUstensil = dropdownFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput)
-    const filteredUstensils = filteredRecipesbyUstensil
-        .flatMap((recipe) => recipe.ustensils)
-        .filter((ustensil) =>
-        ustensil.toLowerCase().includes(ustensilsSearchInput.toLowerCase()))
-        .map((ustensil) => ustensil)
-    const uniqueUstensils = cleanComponent(filteredUstensils);
+    const filteredUstensils = []
+
+    for (const recipe of filteredRecipesbyUstensil) {
+        for (const ustensil of recipe.ustensils) {
+            const lowerCasedUstensil = ustensil.toLowerCase()
+            if (lowerCasedUstensil.includes(ustensilsSearchInput.toLowerCase())) {
+                filteredUstensils.push(ustensil)
+            }
+        }
+    }
+
+    const uniqueUstensils = cleanComponent(filteredUstensils)
     return uniqueUstensils
 }
 
@@ -81,7 +113,17 @@ export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsS
  * @param {string} ustensilsSearchInput - The input value for ustensil filtering.
  * @returns {Array} - An array of recipes containing ustensils matching the search input.
  */
-export const dropdownFilterUstensils = (recipesGlobalFilteredOrNot,ustensilsSearchInput) =>
-    recipesGlobalFilteredOrNot.filter((recipe) =>
-    recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(ustensilsSearchInput.toLowerCase()))
-    ) 
+export const dropdownFilterUstensils = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
+    const filteredRecipes = []
+
+    for (const recipe of recipesGlobalFilteredOrNot) {
+        for (const ustensil of recipe.ustensils) {
+            const lowerCasedUstensil = ustensil.toLowerCase()
+            if (lowerCasedUstensil.includes(ustensilsSearchInput.toLowerCase())) {
+                filteredRecipes.push(recipe)
+            }
+        }
+    }
+
+    return filteredRecipes
+}

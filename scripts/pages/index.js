@@ -249,21 +249,21 @@ function applyAllFilters() {
   let filteredRecipes = allFilteredRecipes
 
   if (activeFilters.ingredients.length > 0) {
-    activeFilters.ingredients.forEach((ingredient) => {
+    for (const ingredient of activeFilters.ingredients) {
       filteredRecipes = dropdownFilterIngredients(filteredRecipes, ingredient)
-    })
+    }
   }
 
   if (activeFilters.appliances.length > 0) {
-    activeFilters.appliances.forEach((appliance) => {
+    for (const appliance of activeFilters.appliances) {
       filteredRecipes = dropdownFilterAppliances(filteredRecipes, appliance)
-    })
+    }
   }
 
   if (activeFilters.ustensils.length > 0) {
-    activeFilters.ustensils.forEach((ustensil) => {
+    for (const ustensil of activeFilters.ustensils) {
       filteredRecipes = dropdownFilterUstensils(filteredRecipes, ustensil)
-    })
+    }
   }
 
   return filteredRecipes
