@@ -220,26 +220,38 @@ function listenToRemoveComponent() {
   divLocalisation.addEventListener("click", (event) => {
     const chosenElement = event.target.closest(".chosen_element")
     const componentValue = chosenElement.getAttribute("data-value")
+
     if (chosenElement) {
       const originalUlId = chosenElement.getAttribute('original-ul')
       const elementType = getElementType(originalUlId)
+
       if (elementType === "ingredients") {
-        activeFilters.ingredients = activeFilters.ingredients.filter(
-          (filter) => filter !== componentValue
-        )
+        for (let i = 0; i < activeFilters.ingredients.length; i++) {
+          if (activeFilters.ingredients[i] === componentValue) {
+            activeFilters.ingredients.splice(i, 1)
+            break
+          }
+        }
       } else if (elementType === "appliances") {
-        activeFilters.appliances = activeFilters.appliances.filter(
-          (filter) => filter !== componentValue
-        )
+        for (let i = 0; i < activeFilters.appliances.length; i++) {
+          if (activeFilters.appliances[i] === componentValue) {
+            activeFilters.appliances.splice(i, 1)
+            break
+          }
+        }
       } else if (elementType === "ustensils") {
-        activeFilters.ustensils = activeFilters.ustensils.filter(
-          (filter) => filter !== componentValue
-        )
+        for (let i = 0; i < activeFilters.ustensils.length; i++) {
+          if (activeFilters.ustensils[i] === componentValue) {
+            activeFilters.ustensils.splice(i, 1)
+            break
+          }
+        }
       }
+
       updateMenuDisplay()
       removeChosenElement(chosenElement)
     }
-  })
+  });
 }
 
 /** Applies all active filters to the current set of filtered recipes.
