@@ -10,9 +10,15 @@ export const ingredientsFilterByDropdown = (recipesGlobalFilteredOrNot, ingredie
     const filteredRecipesbyIngredient = dropdownFilterIngredients(recipesGlobalFilteredOrNot, ingredientsSearchInput)
     const filteredIngredients = []
 
-    for (const recipe of filteredRecipesbyIngredient) {
-        for (const ingredient of recipe.ingredients) {
+    const filteredRecipesLength = filteredRecipesbyIngredient.length
+    for (let i = 0; i < filteredRecipesLength; i++) {
+        const recipe = filteredRecipesbyIngredient[i]
+        const ingredientsLength = recipe.ingredients.length
+
+        for (let j = 0; j < ingredientsLength; j++) {
+            const ingredient = recipe.ingredients[j]
             const lowerCasedIngredient = ingredient.ingredient.toLowerCase()
+
             if (lowerCasedIngredient.includes(ingredientsSearchInput.toLowerCase())) {
                 filteredIngredients.push(lowerCasedIngredient)
             }
@@ -31,12 +37,19 @@ export const ingredientsFilterByDropdown = (recipesGlobalFilteredOrNot, ingredie
  */
 export const dropdownFilterIngredients = (recipesGlobalFilteredOrNot, ingredientsSearchInput) => {
     const filteredRecipes = []
+    const recipesLength = recipesGlobalFilteredOrNot.length
 
-    for (const recipe of recipesGlobalFilteredOrNot) {
-        for (const ingredient of recipe.ingredients) {
+    for (let i = 0; i < recipesLength; i++) {
+        const recipe = recipesGlobalFilteredOrNot[i]
+        const ingredientsLength = recipe.ingredients.length
+
+        for (let j = 0; j < ingredientsLength; j++) {
+            const ingredient = recipe.ingredients[j]
             const lowerCasedIngredient = ingredient.ingredient.toLowerCase()
+
             if (lowerCasedIngredient.includes(ingredientsSearchInput.toLowerCase())) {
                 filteredRecipes.push(recipe)
+                break
             }
         }
     }
@@ -51,11 +64,14 @@ export const dropdownFilterIngredients = (recipesGlobalFilteredOrNot, ingredient
  * @returns {Array} - An array of unique appliances based on the search input.
  */
 export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliancesSearchInput) => {
-    const filteredRecipesbyAppliance = dropdownFilterAppliances(recipesGlobalFilteredOrNot, appliancesSearchInput)
+    const filteredRecipesbyAppliance = dropdownFilterAppliances(recipesGlobalFilteredOrNot, appliancesSearchInput);
     const filteredAppliances = []
 
-    for (const recipe of filteredRecipesbyAppliance) {
+    const filteredRecipesLength = filteredRecipesbyAppliance.length
+    for (let i = 0; i < filteredRecipesLength; i++) {
+        const recipe = filteredRecipesbyAppliance[i]
         const lowerCasedAppliance = recipe.appliance.toLowerCase()
+
         if (lowerCasedAppliance.includes(appliancesSearchInput.toLowerCase())) {
             filteredAppliances.push(recipe.appliance)
         }
@@ -73,9 +89,12 @@ export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliance
  */
 export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesSearchInput) => {
     const filteredRecipes = []
+    const recipesLength = recipesGlobalFilteredOrNot.length
 
-    for (const recipe of recipesGlobalFilteredOrNot) {
+    for (let i = 0; i < recipesLength; i++) {
+        const recipe = recipesGlobalFilteredOrNot[i]
         const lowerCasedAppliance = recipe.appliance.toLowerCase()
+
         if (lowerCasedAppliance.includes(appliancesSearchInput.toLowerCase())) {
             filteredRecipes.push(recipe)
         }
@@ -91,12 +110,18 @@ export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesS
  * @returns {Array} - An array of unique utensils based on the search input.
  */
 export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
-    const filteredRecipesbyUstensil = dropdownFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput)
+    const filteredRecipesbyUstensil = dropdownFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput);
     const filteredUstensils = []
 
-    for (const recipe of filteredRecipesbyUstensil) {
-        for (const ustensil of recipe.ustensils) {
+    const filteredRecipesLength = filteredRecipesbyUstensil.length
+    for (let i = 0; i < filteredRecipesLength; i++) {
+        const recipe = filteredRecipesbyUstensil[i]
+        const ustensilsLength = recipe.ustensils.length
+
+        for (let j = 0; j < ustensilsLength; j++) {
+            const ustensil = recipe.ustensils[j]
             const lowerCasedUstensil = ustensil.toLowerCase()
+
             if (lowerCasedUstensil.includes(ustensilsSearchInput.toLowerCase())) {
                 filteredUstensils.push(ustensil)
             }
@@ -115,12 +140,19 @@ export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsS
  */
 export const dropdownFilterUstensils = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
     const filteredRecipes = []
+    const recipesLength = recipesGlobalFilteredOrNot.length
 
-    for (const recipe of recipesGlobalFilteredOrNot) {
-        for (const ustensil of recipe.ustensils) {
+    for (let i = 0; i < recipesLength; i++) {
+        const recipe = recipesGlobalFilteredOrNot[i]
+        const ustensilsLength = recipe.ustensils.length
+
+        for (let j = 0; j < ustensilsLength; j++) {
+            const ustensil = recipe.ustensils[j]
             const lowerCasedUstensil = ustensil.toLowerCase()
+
             if (lowerCasedUstensil.includes(ustensilsSearchInput.toLowerCase())) {
                 filteredRecipes.push(recipe)
+                break
             }
         }
     }

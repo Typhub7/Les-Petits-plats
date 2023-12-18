@@ -28,7 +28,7 @@ function recipeAndMenuDiplayGlobalSearch(event) {
   const inputValue = event.target.value
   if (inputValue.length >= 3) {
     allFilteredRecipes = globalFilterAll(inputValue)
-    createRecipeCards(allFilteredRecipes)
+    /*createRecipeCards(allFilteredRecipes)*/
     updateMenuDisplay()
     if (!allFilteredRecipes.length) {
       displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.")
