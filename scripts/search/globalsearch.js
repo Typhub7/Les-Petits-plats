@@ -1,66 +1,68 @@
 import { recipes } from '../../data/recipes.js'
+import { createRecipeCards } from '../template/recipetemplate.js'
 
 export const globalFilterText = (globalInputText) => {
     const filteredRecipes = []
-    const recipeLength = recipes.length
-    for (let i = 0; i < recipeLength; i++) {
+    const recipesLength = recipes.length
+    for (let i = 0; i < recipesLength; i++) {
         const recipe = recipes[i]
-        if (recipe.description.toLowerCase().includes(globalInputText.toLowerCase())) {
-            filteredRecipes.push(recipe)
-        }
-    }
-    return filteredRecipes
-};
 
-export const globalFilterAppliance = (globalInputText) => {
-    const filteredRecipes = []
-    const recipeLength = recipes.length
-    for (let i = 0; i < recipeLength; i++) {
-        const recipe = recipes[i]
-        if (recipe.appliance.toLowerCase().includes(globalInputText.toLowerCase())) {
+        if (recipe.description.toLowerCase().includes(globalInputText.toLowerCase()) && !filteredRecipes.includes(recipe)) {
             filteredRecipes.push(recipe)
+            createRecipeCards(filteredRecipes)         
         }
     }
     return filteredRecipes
-};
+}
 
-export const globalFilterUstensils = (globalInputText) => {
-    const filteredRecipes = []
-    const recipeLength = recipes.length
-    for (let i = 0; i < recipeLength; i++) {
+export const globalFilterAppliance = (globalInputText,alreadyFilteredRecipes) => {
+    const filteredRecipes = alreadyFilteredRecipes
+    const recipesLength = recipes.length
+    for (let i = 0; i < recipesLength; i++) {
         const recipe = recipes[i]
-        if (recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(globalInputText.toLowerCase()))) {
-            filteredRecipes.push(recipe)
-        }
-    }
-    return filteredRecipes
-};
 
-export const globalFilterIngredients = (globalInputText) => {
-    const filteredRecipes = []
-    const recipeLength = recipes.length
-    for (let i = 0; i < recipeLength; i++) {
-        const recipe = recipes[i]
-        if (recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(globalInputText.toLowerCase()))) {
+        if (recipe.appliance.toLowerCase().includes(globalInputText.toLowerCase()) && !filteredRecipes.includes(recipe)) {
             filteredRecipes.push(recipe)
+            createRecipeCards(filteredRecipes)     
         }
     }
     return filteredRecipes
-};
+}
+
+export const globalFilterUstensils = (globalInputText,alreadyFilteredRecipes) => {
+    const filteredRecipes = alreadyFilteredRecipes
+    const recipesLength = recipes.length
+    for (let i = 0; i < recipesLength; i++) {
+        const recipe = recipes[i]
+
+        if (recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(globalInputText.toLowerCase())) && !filteredRecipes.includes(recipe)) {
+            filteredRecipes.push(recipe)
+            createRecipeCards(filteredRecipes)
+        }
+    }
+    return filteredRecipes
+}
+
+export const globalFilterIngredients = (globalInputText, alreadyFilteredRecipes) => {
+    const filteredRecipes = alreadyFilteredRecipes
+    const recipesLength = recipes.length
+    for (let i = 0; i < recipesLength; i++) {
+        const recipe = recipes[i]
+
+        if ( recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(globalInputText.toLowerCase())) && !filteredRecipes.includes(recipe)) {
+            filteredRecipes.push(recipe)
+            createRecipeCards(filteredRecipes)
+        }
+    }
+    return filteredRecipes
+}
 
 export const globalFilterAll = (globalInputText) => {
     const textFilteredRecipes = globalFilterText(globalInputText)
-    const applianceFilteredRecipes = globalFilterAppliance(globalInputText)
-    const ustensilsFilteredRecipes = globalFilterUstensils(globalInputText)
-    const ingredientsFilteredRecipes = globalFilterIngredients(globalInputText)
+    const applianceFilteredRecipes = globalFilterAppliance(globalInputText,textFilteredRecipes)
+    const ustensilsFilteredRecipes = globalFilterUstensils(globalInputText,applianceFilteredRecipes)
+    const ingredientsFilteredRecipes = globalFilterIngredients(globalInputText,ustensilsFilteredRecipes)
 
-    const allFilteredRecipes = [];
-    const combinedRecipes = [...new Set([...textFilteredRecipes, ...applianceFilteredRecipes, ...ustensilsFilteredRecipes, ...ingredientsFilteredRecipes])]
-    const combinedrecipeLength = combinedRecipes.length
-
-    for (let i = 0; i < combinedrecipeLength; i++) {
-        allFilteredRecipes.push(combinedRecipes[i])
-    }
-
-    return allFilteredRecipes;
-}
+    const allFilteredRecipes = [...new Set(ingredientsFilteredRecipes)]
+    return allFilteredRecipes
+} 

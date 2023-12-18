@@ -99,7 +99,6 @@ export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesS
             filteredRecipes.push(recipe)
         }
     }
-
     return filteredRecipes
 }
 
@@ -110,7 +109,7 @@ export const dropdownFilterAppliances = (recipesGlobalFilteredOrNot, appliancesS
  * @returns {Array} - An array of unique utensils based on the search input.
  */
 export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsSearchInput) => {
-    const filteredRecipesbyUstensil = dropdownFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput);
+    const filteredRecipesbyUstensil = dropdownFilterUstensils(recipesGlobalFilteredOrNot, ustensilsSearchInput)
     const filteredUstensils = []
 
     const filteredRecipesLength = filteredRecipesbyUstensil.length
@@ -127,7 +126,6 @@ export const ustensilsFilterByDropdown = (recipesGlobalFilteredOrNot, ustensilsS
             }
         }
     }
-
     const uniqueUstensils = cleanComponent(filteredUstensils)
     return uniqueUstensils
 }
@@ -156,6 +154,5 @@ export const dropdownFilterUstensils = (recipesGlobalFilteredOrNot, ustensilsSea
             }
         }
     }
-
     return filteredRecipes
 }

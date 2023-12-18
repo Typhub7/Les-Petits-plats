@@ -198,11 +198,9 @@ function displayUstensilsFilteredByInput(inputValueUstensil, recipesData) {
  */
 export function displayRecipes() {
   const recipeToDisplay = applyAllFilters()
-  filterAndDisplayResults(recipeToDisplay)
+  createRecipeCards(recipeToDisplay)
   return recipeToDisplay
 }
-
-
 
 /** Sets up event listeners for ingredients, appliances, and utensils buttons.
  */
@@ -279,14 +277,6 @@ function applyAllFilters() {
   }
 
   return filteredRecipes
-}
-
-/** Filters recipes and updates the display by creating recipe cards for the provided recipe array.
- * @param {Array} recipeToDisplay - The array of recipes to filter and display.
- */
-function filterAndDisplayResults(recipeToDisplay) {
- createRecipeCards(recipeToDisplay)
- console.log("recipeToDisplay dans filteranddisplayresults",recipeToDisplay)
 }
 
 /** Displays an error message on the recipe gallery when no recipe found with global filter.
