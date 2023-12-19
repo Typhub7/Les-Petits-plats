@@ -41,7 +41,7 @@ export const appliancesFilterByDropdown = (recipesGlobalFilteredOrNot, appliance
         .filter((appliance) =>
             appliance.toLowerCase().includes(appliancesSearchInput.toLowerCase())
         )
-        .map((appliance) => appliance);
+        .map((appliance) => appliance)
 
     const uniqueAppliances = cleanComponent(filteredAppliances);
     return uniqueAppliances

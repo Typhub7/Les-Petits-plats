@@ -21,19 +21,30 @@ function listenToGlobalInput() {
   inputElement.addEventListener("keydown", enterKey)
 }
 
+/** Checks if the provided input value is valid based on a regular expression.
+ *
+ * @param {string} inputValue - The input value to be validated.
+ * @returns {boolean} - True if the input is valid, false otherwise.
+ */
+function isValidInput(inputValue) {
+  const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s'-]+$/
+  return regex.test(inputValue)
+}
+
 /** Handles global search for recipes and updates the component choose display.
  * @param {Event} event - The input event from the global input.
  */
 function recipeAndMenuDiplayGlobalSearch(event) {
   const inputValue = event.target.value
-  if (inputValue.length >= 3) {
+
+  if (inputValue.length >= 3 && isValidInput(inputValue) ) {
     allFilteredRecipes = globalFilterAll(inputValue)
-    createRecipeCards(allFilteredRecipes)
     updateMenuDisplay()
     if (!allFilteredRecipes.length) {
       displayErrorMessage("Aucune recette ne contient '" + inputValue + "'. Vous pouvez chercher par exemple 'tarte aux pommes', 'poisson', etc.")
     }
-  } 
+  }
+
   if (inputValue.length < 3 && allFilteredRecipes!== recipes) {
     allFilteredRecipes = recipes
     createRecipeCards(allFilteredRecipes)
@@ -61,7 +72,9 @@ const listenToSearchInput = (inputSelector, displayFunction) => {
   const searchInput = document.querySelector(inputSelector)
   searchInput.addEventListener("input", (event) => {
     const inputValue = event.target.value
-    displayFunction(inputValue, allFilteredRecipes)
+    if (isValidInput(inputValue)) {
+      displayFunction(inputValue, allFilteredRecipes)
+    }
   })
   searchInput.addEventListener("keydown", enterKey)
 }
@@ -198,11 +211,9 @@ function displayUstensilsFilteredByInput(inputValueUstensil, recipesData) {
  */
 export function displayRecipes() {
   const recipeToDisplay = applyAllFilters()
-  filterAndDisplayResults(recipeToDisplay)
+  createRecipeCards(recipeToDisplay)
   return recipeToDisplay
 }
-
-
 
 /** Sets up event listeners for ingredients, appliances, and utensils buttons.
  */
@@ -269,13 +280,6 @@ function applyAllFilters() {
   return filteredRecipes
 }
 
-/** Filters recipes and updates the display by creating recipe cards for the provided recipe array.
- * @param {Array} recipeToDisplay - The array of recipes to filter and display.
- */
-function filterAndDisplayResults(recipeToDisplay) {
- createRecipeCards(recipeToDisplay)
- console.log("recipeToDisplay dans filteranddisplayresults",recipeToDisplay)
-}
 
 /** Displays an error message on the recipe gallery when no recipe found with global filter.
  * @param {string} message - The error message to be displayed.
