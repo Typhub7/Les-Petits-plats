@@ -78,4 +78,4 @@ export const globalFilterAll = (globalInputText) => {
     
     const allFilteredRecipes = [...new Set(ingredientsFilteredRecipes)]
     return allFilteredRecipes
-    }
+}
